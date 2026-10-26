@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import Navbar from "@/components/Navbar";
 
 export default function LoginPage() {
@@ -33,105 +32,69 @@ export default function LoginPage() {
       } else {
         router.push("/beranda-staf");
       }
-    }, 600);
+    }, 400);
   };
 
   return (
     <>
       <Navbar currentRole="GUEST" />
 
-      <main className="w-full flex-1 bg-surface pt-20 pb-12 flex items-center justify-center px-4">
-        <div className="relative w-full max-w-4xl flex flex-col items-center">
-          {/* Ambient backdrops */}
-          <div className="absolute -top-12 -left-12 w-96 h-96 bg-primary-container/10 rounded-full blur-3xl pointer-events-none"></div>
-          <div className="absolute -bottom-10 -right-10 w-80 h-80 bg-secondary-container/15 rounded-full blur-3xl pointer-events-none"></div>
-
-          {/* Main Container Card */}
-          <div className="relative w-full bg-surface-container-lowest rounded-2xl shadow-xl overflow-hidden border border-outline-variant/30">
-            <div className="grid grid-cols-1 lg:grid-cols-12">
-              {/* Left Branding & Forensic Security Rail */}
-              <div className="lg:col-span-5 bg-surface-container-low p-6 sm:p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-outline-variant/30">
+      <main className="w-full flex-1 bg-slate-50/70 pt-20 pb-12 flex items-center justify-center px-4">
+        <div className="relative w-full max-w-3xl flex flex-col items-center">
+          {/* Main Card */}
+          <div className="relative w-full bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] overflow-hidden border border-slate-200">
+            <div className="grid grid-cols-1 md:grid-cols-12">
+              {/* Left Side Rail */}
+              <div className="md:col-span-5 bg-slate-50 p-6 flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-200">
                 <div>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary">
-                    <span className="material-symbols-outlined text-[16px]">security</span>
-                    <span className="font-label-sm text-label-sm uppercase tracking-wider font-semibold">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200/60">
+                    <span className="material-symbols-outlined text-[14px]">security</span>
+                    <span className="text-[11px] uppercase tracking-wider font-semibold">
                       Akses Portal Terpadu
                     </span>
                   </div>
 
-                  <div className="mt-6 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-sm">
-                      <span className="material-symbols-outlined text-[24px]">verified_user</span>
+                  <div className="mt-4 flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-sm">
+                      <span className="material-symbols-outlined text-[18px]">verified_user</span>
                     </div>
                     <div>
-                      <span className="font-headline-sm text-headline-sm font-bold text-on-surface tracking-tight block">
-                        Smart<span className="text-primary">Audit</span>
+                      <span className="text-[15px] font-bold text-slate-900 tracking-tight block">
+                        Smart<span className="text-blue-600">Audit</span>
                       </span>
-                      <span className="font-data-mono text-data-mono text-on-surface-variant text-[11px]">
-                        v4.0 Enterprise Core
+                      <span className="text-[11px] text-slate-500 font-data-mono">
+                        v4.0 Enterprise
                       </span>
                     </div>
                   </div>
 
-                  {/* Forensic Context Snippet */}
-                  <div className="mt-6 bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant/20">
-                    <div className="flex items-center justify-between">
-                      <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">
-                        Status Validasi
-                      </span>
-                      <span className="inline-flex items-center gap-1 font-label-sm text-label-sm text-secondary bg-surface-container px-2 py-0.5 rounded-full font-semibold">
-                        <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
-                        Siaga Aktif
-                      </span>
-                    </div>
-
-                    <div className="mt-3">
-                      <svg className="w-full h-12 text-primary" fill="none" viewBox="0 0 200 40">
-                        <path
-                          d="M0 30L35 28L65 14L95 24L125 8L155 18L185 6L200 12"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                        ></path>
-                        <path
-                          d="M0 30L35 28L65 14L95 24L125 8L155 18L185 6L200 12V40H0Z"
-                          fill="currentColor"
-                          fillOpacity="0.08"
-                        ></path>
-                        <circle cx="125" cy="8" fill="#2563eb" r="3.5"></circle>
-                        <circle cx="185" cy="6" fill="#004ac6" r="3.5"></circle>
-                      </svg>
-                    </div>
-
-                    <p className="mt-2 font-body-sm text-[12px] text-on-surface-variant leading-relaxed">
-                      Setiap aktivitas login terekam dalam hash audit log terenkripsi SHA-256 yang kebal modifikasi data.
-                    </p>
-                  </div>
+                  <p className="mt-4 text-[12px] text-slate-600 leading-relaxed">
+                    Sistem otomasi audit forensik pengeluaran kas dengan perlindungan jejak digital SHA-256 yang kebal manipulasi data.
+                  </p>
                 </div>
 
-                {/* Quick Demo Switchers */}
-                <div className="mt-8 pt-4 border-t border-outline-variant/30">
-                  <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block mb-2 font-semibold">
-                    Akses Instan Demo (1-Klik)
+                {/* Instant Demo Switchers */}
+                <div className="mt-6 pt-4 border-t border-slate-200">
+                  <span className="text-[11px] text-slate-500 uppercase tracking-wider block mb-2 font-semibold">
+                    Akses Instan Demo (1-Klik):
                   </span>
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-1.5">
                     <button
                       type="button"
                       onClick={() => handleSelectRole("staff")}
-                      className={`w-full text-left px-3 py-2.5 rounded-xl transition-all flex items-center justify-between text-on-surface font-label-md text-label-md border ${
+                      className={`w-full text-left px-2.5 py-2 rounded-lg transition-all flex items-center justify-between text-[12px] border ${
                         role === "staff"
-                          ? "bg-surface-container-lowest border-primary shadow-sm font-semibold"
-                          : "bg-surface-container-lowest hover:bg-surface-container border-outline-variant/30"
+                          ? "bg-white border-blue-600 text-blue-900 font-semibold shadow-xs"
+                          : "bg-white/80 hover:bg-white text-slate-700 border-slate-200"
                       }`}
                     >
-                      <span className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-[18px]">
+                      <span className="flex items-center gap-1.5">
+                        <span className="material-symbols-outlined text-blue-600 text-[16px]">
                           account_balance_wallet
                         </span>
                         <span>Akun Demo Bendahara (Staf)</span>
                       </span>
-                      <span className="material-symbols-outlined text-[16px] text-on-surface-variant">
+                      <span className="material-symbols-outlined text-[14px] text-slate-400">
                         arrow_forward
                       </span>
                     </button>
@@ -139,19 +102,19 @@ export default function LoginPage() {
                     <button
                       type="button"
                       onClick={() => handleSelectRole("auditor")}
-                      className={`w-full text-left px-3 py-2.5 rounded-xl transition-all flex items-center justify-between text-on-surface font-label-md text-label-md border ${
+                      className={`w-full text-left px-2.5 py-2 rounded-lg transition-all flex items-center justify-between text-[12px] border ${
                         role === "auditor"
-                          ? "bg-surface-container-lowest border-tertiary shadow-sm font-semibold"
-                          : "bg-surface-container-lowest hover:bg-surface-container border-outline-variant/30"
+                          ? "bg-white border-rose-600 text-rose-900 font-semibold shadow-xs"
+                          : "bg-white/80 hover:bg-white text-slate-700 border-slate-200"
                       }`}
                     >
-                      <span className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-tertiary text-[18px]">
+                      <span className="flex items-center gap-1.5">
+                        <span className="material-symbols-outlined text-rose-600 text-[16px]">
                           policy
                         </span>
                         <span>Akun Demo Auditor Forensik</span>
                       </span>
-                      <span className="material-symbols-outlined text-[16px] text-on-surface-variant">
+                      <span className="material-symbols-outlined text-[14px] text-slate-400">
                         arrow_forward
                       </span>
                     </button>
@@ -159,212 +122,161 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              {/* Right Main Interactive Form Panel */}
-              <div className="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between bg-surface-container-lowest">
+              {/* Right Form Panel */}
+              <div className="md:col-span-7 p-6 flex flex-col justify-between bg-white">
                 <div>
-                  {/* Header Titles */}
-                  <div>
-                    <h1 className="font-headline-lg text-headline-lg text-on-surface text-[24px] font-bold">
-                      Selamat Datang di SmartAudit
-                    </h1>
-                    <p className="font-body-md text-body-md text-on-surface-variant mt-1">
-                      Pilih peran otorisasi Anda untuk melanjutkan verifikasi sistem
-                    </p>
-                  </div>
+                  <h1 className="text-[18px] font-bold text-slate-900">
+                    Masuk ke Sistem SmartAudit
+                  </h1>
+                  <p className="text-[13px] text-slate-500 mt-0.5">
+                    Pilih peran otorisasi untuk memulai proses verifikasi
+                  </p>
 
                   {/* Role Selector Segmented Cards */}
-                  <div className="mt-6">
-                    <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block mb-2 font-semibold">
-                      Pilih Otorisasi Pengguna
+                  <div className="mt-4">
+                    <span className="text-[11px] text-slate-500 uppercase tracking-wider block mb-1.5 font-semibold">
+                      Otorisasi Pengguna:
                     </span>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {/* Role Card 1: Staf Keuangan */}
+                    <div className="grid grid-cols-2 gap-2">
                       <button
                         type="button"
                         onClick={() => handleSelectRole("staff")}
-                        className={`text-left p-4 rounded-xl transition-all flex flex-col justify-between border ${
+                        className={`text-left p-3 rounded-lg transition-all flex flex-col justify-between border ${
                           role === "staff"
-                            ? "bg-surface-container-high border-primary ring-2 ring-primary/20 shadow-sm"
-                            : "bg-surface-container-low hover:bg-surface-container border-outline-variant/30"
+                            ? "bg-blue-50/60 border-blue-600 ring-1 ring-blue-600"
+                            : "bg-slate-50 hover:bg-slate-100/70 border-slate-200"
                         }`}
                       >
-                        <div>
-                          <div className="flex items-center justify-between">
-                            <div
-                              className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                                role === "staff"
-                                  ? "bg-primary text-on-primary"
-                                  : "bg-surface-container text-on-surface"
-                              }`}
-                            >
-                              <span className="material-symbols-outlined text-[18px]">
-                                account_balance_wallet
-                              </span>
-                            </div>
-                            <span
-                              className={`w-4 h-4 rounded-full flex items-center justify-center border ${
-                                role === "staff"
-                                  ? "border-primary bg-primary"
-                                  : "border-outline-variant bg-transparent"
-                              }`}
-                            >
-                              {role === "staff" && (
-                                <span className="w-1.5 h-1.5 rounded-full bg-on-primary"></span>
-                              )}
-                            </span>
-                          </div>
-                          <div className="mt-3 font-headline-sm text-headline-sm text-on-surface font-semibold">
-                            Staf Keuangan
-                          </div>
-                          <span className="font-label-sm text-label-sm text-secondary font-medium">
-                            Bendahara Pengeluaran
+                        <div className="flex items-center justify-between">
+                          <span className="material-symbols-outlined text-[18px] text-blue-600">
+                            account_balance_wallet
+                          </span>
+                          <span
+                            className={`w-3.5 h-3.5 rounded-full flex items-center justify-center border ${
+                              role === "staff" ? "border-blue-600 bg-blue-600" : "border-slate-300"
+                            }`}
+                          >
+                            {role === "staff" && <span className="w-1 h-1 rounded-full bg-white"></span>}
                           </span>
                         </div>
-                        <p className="font-body-sm text-[12px] text-on-surface-variant mt-2 leading-relaxed">
-                          Input rincian pengeluaran, unggah bukti nota & pantau status pencairan.
-                        </p>
+                        <div className="mt-2 text-[13px] font-semibold text-slate-900">Staf Keuangan</div>
+                        <div className="text-[11px] text-slate-500">Bendahara Pengeluaran</div>
                       </button>
 
-                      {/* Role Card 2: Auditor Forensik */}
                       <button
                         type="button"
                         onClick={() => handleSelectRole("auditor")}
-                        className={`text-left p-4 rounded-xl transition-all flex flex-col justify-between border ${
+                        className={`text-left p-3 rounded-lg transition-all flex flex-col justify-between border ${
                           role === "auditor"
-                            ? "bg-surface-container-high border-tertiary ring-2 ring-tertiary/20 shadow-sm"
-                            : "bg-surface-container-low hover:bg-surface-container border-outline-variant/30"
+                            ? "bg-rose-50/60 border-rose-600 ring-1 ring-rose-600"
+                            : "bg-slate-50 hover:bg-slate-100/70 border-slate-200"
                         }`}
                       >
-                        <div>
-                          <div className="flex items-center justify-between">
-                            <div
-                              className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                                role === "auditor"
-                                  ? "bg-tertiary text-on-tertiary"
-                                  : "bg-surface-container text-on-surface"
-                              }`}
-                            >
-                              <span className="material-symbols-outlined text-[18px]">policy</span>
-                            </div>
-                            <span
-                              className={`w-4 h-4 rounded-full flex items-center justify-center border ${
-                                role === "auditor"
-                                  ? "border-tertiary bg-tertiary"
-                                  : "border-outline-variant bg-transparent"
-                              }`}
-                            >
-                              {role === "auditor" && (
-                                <span className="w-1.5 h-1.5 rounded-full bg-on-tertiary"></span>
-                              )}
-                            </span>
-                          </div>
-                          <div className="mt-3 font-headline-sm text-headline-sm text-on-surface font-semibold">
-                            Auditor Forensik
-                          </div>
-                          <span className="font-label-sm text-label-sm text-tertiary font-medium">
-                            Inspektorat & Verifikator
+                        <div className="flex items-center justify-between">
+                          <span className="material-symbols-outlined text-[18px] text-rose-600">
+                            policy
+                          </span>
+                          <span
+                            className={`w-3.5 h-3.5 rounded-full flex items-center justify-center border ${
+                              role === "auditor" ? "border-rose-600 bg-rose-600" : "border-slate-300"
+                            }`}
+                          >
+                            {role === "auditor" && <span className="w-1 h-1 rounded-full bg-white"></span>}
                           </span>
                         </div>
-                        <p className="font-body-sm text-[12px] text-on-surface-variant mt-2 leading-relaxed">
-                          Investigasi anomali berisiko, verifikasi forensik OCR & putusan persetujuan.
-                        </p>
+                        <div className="mt-2 text-[13px] font-semibold text-slate-900">Auditor Forensik</div>
+                        <div className="text-[11px] text-slate-500">Inspektorat & Verifikasi</div>
                       </button>
                     </div>
                   </div>
 
-                  {/* Form */}
-                  <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
-                    {/* Identifier */}
+                  {/* Form Inputs */}
+                  <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-3">
                     <div>
-                      <label className="block font-label-md text-label-md text-on-surface mb-1 font-semibold">
+                      <label className="block text-[12px] font-medium text-slate-700 mb-1">
                         Email Kedinasan / NIP
                       </label>
                       <div className="relative flex items-center">
-                        <div className="absolute left-3 text-on-surface-variant pointer-events-none flex items-center">
-                          <span className="material-symbols-outlined text-[20px]">badge</span>
-                        </div>
+                        <span className="material-symbols-outlined absolute left-2.5 text-[17px] text-slate-400 pointer-events-none">
+                          badge
+                        </span>
                         <input
                           type="text"
                           required
                           value={identifier}
                           onChange={(e) => setIdentifier(e.target.value)}
-                          className="w-full h-10 pl-10 pr-4 rounded-xl bg-surface-container-low text-on-surface placeholder:text-outline font-body-md text-body-md focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all border border-outline-variant/30"
-                          placeholder="contoh: siti.rahma@instansi.go.id"
+                          className="w-full h-9 pl-8 pr-3 rounded-lg bg-slate-50/60 text-slate-900 placeholder:text-slate-400 text-[13px] border border-slate-300 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600/20 focus:outline-none transition-all"
+                          placeholder="nama@instansi.go.id"
                         />
                       </div>
                     </div>
 
-                    {/* Password */}
                     <div>
                       <div className="flex items-center justify-between mb-1">
-                        <label className="block font-label-md text-label-md text-on-surface font-semibold">
+                        <label className="block text-[12px] font-medium text-slate-700">
                           Kata Sandi
                         </label>
-                        <a href="#" className="font-label-sm text-label-sm text-primary hover:underline font-semibold">
+                        <a href="#" className="text-[11px] text-blue-600 hover:underline">
                           Lupa sandi?
                         </a>
                       </div>
                       <div className="relative flex items-center">
-                        <div className="absolute left-3 text-on-surface-variant pointer-events-none flex items-center">
-                          <span className="material-symbols-outlined text-[20px]">key</span>
-                        </div>
+                        <span className="material-symbols-outlined absolute left-2.5 text-[17px] text-slate-400 pointer-events-none">
+                          key
+                        </span>
                         <input
                           type={showPassword ? "text" : "password"}
                           required
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          className="w-full h-10 pl-10 pr-10 rounded-xl bg-surface-container-low text-on-surface placeholder:text-outline font-data-mono text-data-mono focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all border border-outline-variant/30"
+                          className="w-full h-9 pl-8 pr-8 rounded-lg bg-slate-50/60 text-slate-900 placeholder:text-slate-400 text-[13px] border border-slate-300 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600/20 focus:outline-none transition-all font-data-mono"
                           placeholder="••••••••••••"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 text-on-surface-variant hover:text-on-surface flex items-center"
+                          className="absolute right-2.5 text-slate-400 hover:text-slate-600 flex items-center"
                         >
-                          <span className="material-symbols-outlined text-[20px]">
+                          <span className="material-symbols-outlined text-[17px]">
                             {showPassword ? "visibility_off" : "visibility"}
                           </span>
                         </button>
                       </div>
                     </div>
 
-                    {/* Remember me & IP */}
-                    <div className="flex items-center justify-between text-body-sm">
-                      <label className="flex items-center gap-2 cursor-pointer select-none">
+                    <div className="flex items-center justify-between text-[12px]">
+                      <label className="flex items-center gap-1.5 cursor-pointer select-none">
                         <input
                           type="checkbox"
                           defaultChecked
-                          className="w-4 h-4 rounded text-primary focus:ring-primary accent-primary"
+                          className="w-3.5 h-3.5 rounded text-blue-600 focus:ring-blue-600 accent-blue-600"
                         />
-                        <span className="text-on-surface-variant text-[13px]">
-                          Ingat sesi saya selama 30 hari
-                        </span>
+                        <span className="text-slate-600 text-[12px]">Ingat sesi selama 30 hari</span>
                       </label>
-                      <span className="font-data-mono text-[11px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">
+                      <span className="font-data-mono text-[11px] text-slate-400">
                         IP: 180.252.12.98
                       </span>
                     </div>
 
-                    {/* Submit Button */}
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className={`w-full h-11 mt-2 rounded-xl text-on-primary font-headline-sm text-headline-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-md ${
+                      className={`w-full h-9 mt-1 rounded-lg text-white text-[13px] font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm ${
                         role === "auditor"
-                          ? "bg-tertiary hover:bg-tertiary-container"
-                          : "bg-primary hover:bg-primary-container"
+                          ? "bg-rose-600 hover:bg-rose-700"
+                          : "bg-blue-600 hover:bg-blue-700"
                       }`}
                     >
                       {isLoading ? (
                         <>
-                          <span className="material-symbols-outlined text-[20px] animate-spin">
+                          <span className="material-symbols-outlined text-[17px] animate-spin">
                             sync
                           </span>
-                          <span>Memverifikasi Otorisasi...</span>
+                          <span>Memverifikasi Sesi...</span>
                         </>
                       ) : (
                         <>
-                          <span className="material-symbols-outlined text-[20px]">lock_open</span>
+                          <span className="material-symbols-outlined text-[17px]">lock_open</span>
                           <span>
                             Masuk Sebagai {role === "auditor" ? "Auditor Forensik" : "Staf Keuangan"}
                           </span>
@@ -374,12 +286,9 @@ export default function LoginPage() {
                   </form>
                 </div>
 
-                {/* Footer TLS Notice */}
-                <div className="mt-6 pt-4 flex items-center justify-center gap-2 text-on-surface-variant border-t border-outline-variant/20">
-                  <span className="material-symbols-outlined text-[16px] text-secondary">verified</span>
-                  <span className="font-label-sm text-label-sm text-center">
-                    Dilindungi Enkripsi TLS 1.3 & Verifikasi Dua Langkah (2FA)
-                  </span>
+                <div className="mt-4 pt-3 flex items-center justify-center gap-1.5 text-slate-400 text-[11px] border-t border-slate-100">
+                  <span className="material-symbols-outlined text-[14px] text-emerald-600">verified</span>
+                  <span>Dilindungi Enkripsi TLS 1.3 & Audit Jejak Kriptografis</span>
                 </div>
               </div>
             </div>

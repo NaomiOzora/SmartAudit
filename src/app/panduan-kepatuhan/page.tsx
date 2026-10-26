@@ -6,324 +6,272 @@ export default function PanduanKepatuhanPage() {
     <>
       <Navbar currentRole="STAFF" />
 
-      <main className="w-full pt-16 bg-surface min-h-screen">
-        {/* Top Banner / Editorial Header */}
-        <section className="w-full bg-surface-container-low px-4 sm:px-6 lg:px-8 py-10 relative overflow-hidden border-b border-surface-container">
-          <div className="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-primary/5 blur-3xl pointer-events-none"></div>
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-10">
-            <div className="space-y-2 max-w-3xl">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm uppercase tracking-wider font-semibold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+      <main className="w-full pt-14 bg-slate-50/50 min-h-screen">
+        {/* Banner */}
+        <section className="w-full bg-white px-4 sm:px-6 py-6 border-b border-slate-200">
+          <div className="max-w-5xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-1.5 mb-1">
+                <span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-[10px] uppercase tracking-wider font-semibold border border-blue-200">
                   SOP Kepatuhan v4.0 / 2026
                 </span>
-                <span className="text-outline-variant font-label-sm text-label-sm">|</span>
-                <span className="font-label-sm text-label-sm text-on-surface-variant font-semibold">
-                  Pedoman Verifikasi Audit Keuangan & Kas
+                <span className="text-slate-300">&bull;</span>
+                <span className="text-[12px] text-slate-500 font-medium">
+                  Pedoman Verifikasi Audit Keuangan
                 </span>
               </div>
-              <h1 className="font-display-lg text-display-lg text-on-surface font-bold text-[28px] md:text-[34px] tracking-tight">
+              <h1 className="text-[20px] font-bold text-slate-900 tracking-tight">
                 Panduan Kepatuhan & Kebijakan Pengeluaran Kas
               </h1>
-              <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
-                Standar Operasional Prosedur (SOP) pengajuan klaim biaya operasional, batas limitasi otorisasi bertingkat, dan matriks parameter skor fraud SmartAudit.
+              <p className="text-[13px] text-slate-600 mt-0.5 max-w-xl">
+                Standar Operasional Prosedur (SOP) pengajuan klaim, batas limitasi otorisasi bertingkat, dan matriks parameter fraud SmartAudit.
               </p>
             </div>
 
-            <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 shrink-0">
-              <Link
-                href="/input-pengeluaran"
-                className="h-10 px-5 bg-primary text-on-primary font-label-md text-label-md rounded-xl flex items-center gap-2 shadow-md hover:bg-primary-container transition-colors font-semibold"
-              >
-                <span className="material-symbols-outlined text-[18px]">add</span>
-                <span>Buat Pengajuan Baru</span>
-              </Link>
-            </div>
+            <Link
+              href="/input-pengeluaran"
+              className="h-8.5 px-3.5 bg-blue-600 text-white text-[12px] rounded-lg flex items-center gap-1.5 shadow-xs hover:bg-blue-700 transition-colors font-semibold self-start sm:self-auto"
+            >
+              <span className="material-symbols-outlined text-[16px]">add</span>
+              <span>Buat Pengajuan Baru</span>
+            </Link>
           </div>
         </section>
 
-        {/* Main Content */}
-        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 flex flex-col gap-10">
-          {/* Section 1: Matriks Limitasi Tiga Tingkat */}
-          <section className="flex flex-col gap-6">
+        {/* Content */}
+        <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 py-6 flex flex-col gap-6">
+          {/* Section 1: Tier Limit Matrix */}
+          <section className="flex flex-col gap-3">
             <div>
-              <span className="font-label-sm text-label-sm text-primary uppercase tracking-wider font-semibold">
+              <span className="text-[11px] text-blue-600 uppercase tracking-wider font-semibold">
                 Parameter Tingkat Otoritas
               </span>
-              <h2 className="font-headline-lg text-headline-lg text-on-surface font-bold text-[22px]">
+              <h2 className="text-[16px] font-bold text-slate-900">
                 Matriks Limitasi & Otorisasi Pengeluaran Kas
               </h2>
-              <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                Batas ambang pemrosesan otomatis AI dan eskalasi tanda tangan pemeriksa forensik.
-              </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Tier 1 */}
-              <div className="bg-surface-container-lowest rounded-2xl p-6 flex flex-col justify-between shadow-sm border border-outline-variant/30 hover:shadow-md transition-shadow">
-                <div className="space-y-4">
+              <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-xs flex flex-col justify-between">
+                <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm uppercase font-semibold">
+                    <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[10px] uppercase font-semibold">
                       Tier 01 &bull; Rutin
                     </span>
-                    <span className="material-symbols-outlined text-secondary text-[24px]">bolt</span>
+                    <span className="material-symbols-outlined text-emerald-600 text-[18px]">bolt</span>
                   </div>
                   <div>
-                    <div className="font-body-sm text-body-sm text-on-surface-variant">Batas Pengajuan</div>
-                    <div className="font-display-lg text-display-lg text-on-surface mt-0.5 tracking-tight font-bold text-[26px] font-data-mono">
+                    <div className="text-[11px] text-slate-500">Batas Pengajuan</div>
+                    <div className="text-[18px] font-bold text-slate-900 font-data-mono">
                       &lt; Rp 5.000.000
                     </div>
-                    <div className="font-label-sm text-label-sm text-secondary font-semibold mt-1">
+                    <div className="text-[11px] text-emerald-700 font-semibold mt-0.5">
                       Biaya Operasional Rutin Staf
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-surface-container-low space-y-2">
-                    <div className="font-label-md text-label-md text-on-surface font-bold flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-[18px] text-secondary">smart_toy</span>
-                      Otomatis AI Fast-Track
-                    </div>
-                    <p className="font-body-sm text-[12px] text-on-surface-variant leading-relaxed">
-                      Langsung diteruskan ke pencairan kas via Webhook jika skor risiko anomali <strong className="text-on-surface">&lt; 40%</strong>.
-                    </p>
+                  <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 text-[11px] text-slate-600 leading-relaxed">
+                    <strong className="text-slate-900 block font-semibold mb-0.5">Otomatis AI Fast-Track</strong>
+                    Langsung diteruskan ke pencairan kas via Webhook jika skor risiko anomali &lt; 40%.
                   </div>
 
-                  <ul className="space-y-2 font-body-sm text-[12px] text-on-surface-variant pt-2">
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[16px] text-secondary">check_circle</span>
-                      Struk digital / nota fisik cetak 300 DPI
+                  <ul className="space-y-1.5 text-[11px] text-slate-600 pt-1">
+                    <li className="flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-[14px] text-emerald-600">check_circle</span>
+                      Struk cetak / nota digital 300 DPI
                     </li>
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[16px] text-secondary">check_circle</span>
+                    <li className="flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-[14px] text-emerald-600">check_circle</span>
                       SLA Pencairan: &le; 4 Jam Kerja
                     </li>
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[16px] text-secondary">check_circle</span>
+                    <li className="flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-[14px] text-emerald-600">check_circle</span>
                       Tanpa antrean review manual
                     </li>
                   </ul>
                 </div>
 
-                <div className="pt-6">
-                  <div className="w-full bg-surface-container h-2 rounded-full overflow-hidden">
-                    <div className="bg-secondary h-full rounded-full" style={{ width: "25%" }}></div>
-                  </div>
-                  <div className="flex justify-between items-center mt-2 font-label-sm text-label-sm text-on-surface-variant font-semibold">
-                    <span>Tingkat Pengawasan: Minimum</span>
-                    <span className="text-secondary font-bold">25%</span>
-                  </div>
+                <div className="pt-4 mt-2 border-t border-slate-100 flex justify-between items-center text-[11px] text-slate-500">
+                  <span>Pengawasan: Minimum</span>
+                  <span className="font-bold text-emerald-700">25%</span>
                 </div>
               </div>
 
               {/* Tier 2 */}
-              <div className="bg-surface-container-lowest rounded-2xl p-6 flex flex-col justify-between shadow-sm border border-outline-variant/30 hover:shadow-md transition-shadow">
-                <div className="space-y-4">
+              <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-xs flex flex-col justify-between">
+                <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm uppercase font-semibold">
+                    <span className="px-2 py-0.5 rounded bg-blue-50 text-blue-700 text-[10px] uppercase font-semibold border border-blue-200">
                       Tier 02 &bull; Operasional
                     </span>
-                    <span className="material-symbols-outlined text-primary text-[24px]">supervisor_account</span>
+                    <span className="material-symbols-outlined text-blue-600 text-[18px]">supervisor_account</span>
                   </div>
                   <div>
-                    <div className="font-body-sm text-body-sm text-on-surface-variant">Rentang Nilai</div>
-                    <div className="font-headline-lg text-headline-lg text-on-surface mt-0.5 tracking-tight font-bold text-[22px] font-data-mono">
-                      Rp 5 Jt &ndash; Rp 15 Jt
+                    <div className="text-[11px] text-slate-500">Rentang Nilai</div>
+                    <div className="text-[18px] font-bold text-slate-900 font-data-mono">
+                      Rp 5 Jt &ndash; 15 Jt
                     </div>
-                    <div className="font-label-sm text-label-sm text-primary font-semibold mt-1">
-                      Biaya Operasional Divisi & Logistik
+                    <div className="text-[11px] text-blue-700 font-semibold mt-0.5">
+                      Biaya Operasional Divisi
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-surface-container-high space-y-2">
-                    <div className="font-label-md text-label-md text-on-surface font-bold flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-[18px] text-primary">verified</span>
-                      Verifikasi Kepala Unit + AI Scan
-                    </div>
-                    <p className="font-body-sm text-[12px] text-on-surface-variant leading-relaxed">
-                      Memerlukan otorisasi digital setelah kuitansi melewati pengujian duplikasi pHash toleransi &le; 20%.
-                    </p>
+                  <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 text-[11px] text-slate-600 leading-relaxed">
+                    <strong className="text-slate-900 block font-semibold mb-0.5">Verifikasi Manajer + AI</strong>
+                    Memerlukan otorisasi digital setelah kuitansi melewati pengujian duplikasi pHash.
                   </div>
 
-                  <ul className="space-y-2 font-body-sm text-[12px] text-on-surface-variant pt-2">
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[16px] text-primary">check_circle</span>
-                      Faktur resmi bernomor seri valid
+                  <ul className="space-y-1.5 text-[11px] text-slate-600 pt-1">
+                    <li className="flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-[14px] text-blue-600">check_circle</span>
+                      Faktur resmi bernomor seri
                     </li>
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+                    <li className="flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-[14px] text-blue-600">check_circle</span>
                       SLA Pencairan: &le; 24 Jam Kerja
                     </li>
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[16px] text-primary">check_circle</span>
-                      Wajib lampiran alokasi mata anggaran
+                    <li className="flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-[14px] text-blue-600">check_circle</span>
+                      Wajib rincian alokasi anggaran
                     </li>
                   </ul>
                 </div>
 
-                <div className="pt-6">
-                  <div className="w-full bg-surface-container h-2 rounded-full overflow-hidden">
-                    <div className="bg-primary h-full rounded-full" style={{ width: "65%" }}></div>
-                  </div>
-                  <div className="flex justify-between items-center mt-2 font-label-sm text-label-sm text-on-surface-variant font-semibold">
-                    <span>Tingkat Pengawasan: Menengah</span>
-                    <span className="text-primary font-bold">65%</span>
-                  </div>
+                <div className="pt-4 mt-2 border-t border-slate-100 flex justify-between items-center text-[11px] text-slate-500">
+                  <span>Pengawasan: Menengah</span>
+                  <span className="font-bold text-blue-700">65%</span>
                 </div>
               </div>
 
               {/* Tier 3 */}
-              <div className="bg-surface-container-lowest rounded-2xl p-6 flex flex-col justify-between shadow-sm border border-outline-variant/30 hover:shadow-md transition-shadow">
-                <div className="space-y-4">
+              <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-xs flex flex-col justify-between">
+                <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="px-3 py-1 rounded-full bg-error-container text-tertiary font-label-sm text-label-sm uppercase font-semibold">
+                    <span className="px-2 py-0.5 rounded bg-rose-50 text-rose-700 text-[10px] uppercase font-semibold border border-rose-200">
                       Tier 03 &bull; Strategis
                     </span>
-                    <span className="material-symbols-outlined text-tertiary text-[24px]">policy</span>
+                    <span className="material-symbols-outlined text-rose-600 text-[18px]">policy</span>
                   </div>
                   <div>
-                    <div className="font-body-sm text-body-sm text-on-surface-variant">Batas Pengeluaran</div>
-                    <div className="font-headline-lg text-headline-lg text-on-surface mt-0.5 tracking-tight font-bold text-[26px] font-data-mono">
+                    <div className="text-[11px] text-slate-500">Batas Pengeluaran</div>
+                    <div className="text-[18px] font-bold text-slate-900 font-data-mono">
                       &gt; Rp 15.000.000
                     </div>
-                    <div className="font-label-sm text-label-sm text-tertiary font-semibold mt-1">
-                      Belanja Modal & Kontrak Vendor
+                    <div className="text-[11px] text-rose-700 font-semibold mt-0.5">
+                      Belanja Modal & Kontrak
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-error-container/40 space-y-2 border border-tertiary/20">
-                    <div className="font-label-md text-label-md text-tertiary font-bold flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-[18px]">gavel</span>
-                      Audit Forensik Ketat
-                    </div>
-                    <p className="font-body-sm text-[12px] text-on-surface leading-relaxed">
-                      Wajib melewati meja Auditor Forensik, inspeksi side-by-side berkas fisik, dan Berita Acara Pemeriksaan (BAP).
-                    </p>
+                  <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 text-[11px] text-slate-600 leading-relaxed">
+                    <strong className="text-slate-900 block font-semibold mb-0.5">Audit Forensik Ketat</strong>
+                    Wajib melewati meja Auditor Forensik, inspeksi side-by-side berkas fisik, dan BAP.
                   </div>
 
-                  <ul className="space-y-2 font-body-sm text-[12px] text-on-surface-variant pt-2">
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[16px] text-tertiary">check_circle</span>
-                      e-Faktur Pajak resmi terdaftar DJP
+                  <ul className="space-y-1.5 text-[11px] text-slate-600 pt-1">
+                    <li className="flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-[14px] text-rose-600">check_circle</span>
+                      e-Faktur Pajak resmi DJP
                     </li>
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[16px] text-tertiary">check_circle</span>
-                      Cek silang split bill & multi-rekanan
+                    <li className="flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-[14px] text-rose-600">check_circle</span>
+                      Cek silang split bill vendor
                     </li>
-                    <li className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[16px] text-tertiary">check_circle</span>
-                      Ditandatangani digital ISO 27001
+                    <li className="flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-[14px] text-rose-600">check_circle</span>
+                      Tanda tangan digital ISO 27001
                     </li>
                   </ul>
                 </div>
 
-                <div className="pt-6">
-                  <div className="w-full bg-surface-container h-2 rounded-full overflow-hidden">
-                    <div className="bg-tertiary h-full rounded-full" style={{ width: "100%" }}></div>
-                  </div>
-                  <div className="flex justify-between items-center mt-2 font-label-sm text-label-sm text-on-surface-variant font-semibold">
-                    <span>Tingkat Pengawasan: Maksimum</span>
-                    <span className="text-tertiary font-bold">100%</span>
-                  </div>
+                <div className="pt-4 mt-2 border-t border-slate-100 flex justify-between items-center text-[11px] text-slate-500">
+                  <span>Pengawasan: Maksimum</span>
+                  <span className="font-bold text-rose-700">100%</span>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Section 2: Matriks 6 Parameter Algoritma Fraud */}
-          <section className="bg-surface-container-lowest rounded-2xl p-6 sm:p-8 shadow-sm border border-outline-variant/30 space-y-6">
+          {/* Section 2: 6 Parameters Matrix */}
+          <section className="bg-white rounded-xl p-5 border border-slate-200 shadow-xs space-y-4">
             <div>
-              <span className="font-label-sm text-label-sm text-primary uppercase tracking-wider font-semibold">
-                Matriks Parameter Poin Fraud
+              <span className="text-[11px] text-blue-600 uppercase tracking-wider font-semibold">
+                Matriks Parameter Fraud
               </span>
-              <h2 className="font-headline-lg text-headline-lg text-on-surface font-bold text-[22px]">
-                Kombinasi Rule-Based Engine & AI Vision Scoring
+              <h2 className="text-[15px] font-bold text-slate-900">
+                Kombinasi Rule Engine & AI Scoring (0 - 100 Poin)
               </h2>
-              <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                Formula: Skor Akhir = MIN(100, &Sigma; (Poin Pelanggaran)). Skor &ge; 40% otomatis masuk antrean auditor.
-              </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-start justify-between gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[12px]">
+              <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-start justify-between gap-3">
                 <div>
-                  <div className="font-headline-sm text-[15px] font-bold text-on-surface">
-                    1. Indikasi Kuat Duplikasi Dokumen
-                  </div>
-                  <p className="font-body-sm text-[12px] text-on-surface-variant mt-1 leading-relaxed">
-                    Perceptual Hashing (dHash) kemiripan &gt; 85% atau Exact Match (Vendor + Tanggal + Nominal identik).
+                  <div className="font-semibold text-slate-900">1. Duplikasi Dokumen Grafis</div>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    Perceptual Hashing (dHash) kemiripan &gt; 85% atau Exact Match (Vendor + Tanggal + Nominal).
                   </p>
                 </div>
-                <span className="font-data-mono font-bold text-[13px] px-3 py-1 rounded-lg bg-tertiary text-on-tertiary shrink-0">
+                <span className="font-data-mono font-bold text-[11px] px-2 py-0.5 rounded bg-rose-100 text-rose-800 shrink-0">
                   +40 Poin
                 </span>
               </div>
 
-              <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-start justify-between gap-4">
+              <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-start justify-between gap-3">
                 <div>
-                  <div className="font-headline-sm text-[15px] font-bold text-on-surface">
-                    2. Indikasi Split Bill (Pecah Transaksi)
-                  </div>
-                  <p className="font-body-sm text-[12px] text-on-surface-variant mt-1 leading-relaxed">
-                    Vendor dan tanggal sama diajukan dengan selisih waktu &lt; 2 jam atau pemecahan pengeluaran tepat di bawah pagu otorisasi.
+                  <div className="font-semibold text-slate-900">2. Indikasi Split Bill</div>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    Vendor dan tanggal sama dengan selisih &lt; 2 jam untuk menghindari batas pagu otorisasi.
                   </p>
                 </div>
-                <span className="font-data-mono font-bold text-[13px] px-3 py-1 rounded-lg bg-tertiary text-on-tertiary shrink-0">
+                <span className="font-data-mono font-bold text-[11px] px-2 py-0.5 rounded bg-rose-100 text-rose-800 shrink-0">
                   +35 Poin
                 </span>
               </div>
 
-              <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-start justify-between gap-4">
+              <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-start justify-between gap-3">
                 <div>
-                  <div className="font-headline-sm text-[15px] font-bold text-on-surface">
-                    3. Anomali Nominal vs Historis
-                  </div>
-                  <p className="font-body-sm text-[12px] text-on-surface-variant mt-1 leading-relaxed">
-                    Pengeluaran melampaui &gt; 3 Standar Deviasi dari data historis per divisi pemohon.
+                  <div className="font-semibold text-slate-900">3. Anomali Nominal vs Historis</div>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    Pengeluaran melampaui &gt; 3 Standar Deviasi dari data rata-rata historis per divisi.
                   </p>
                 </div>
-                <span className="font-data-mono font-bold text-[13px] px-3 py-1 rounded-lg bg-tertiary text-on-tertiary shrink-0">
+                <span className="font-data-mono font-bold text-[11px] px-2 py-0.5 rounded bg-rose-100 text-rose-800 shrink-0">
                   +25 Poin
                 </span>
               </div>
 
-              <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-start justify-between gap-4">
+              <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-start justify-between gap-3">
                 <div>
-                  <div className="font-headline-sm text-[15px] font-bold text-on-surface">
-                    4. Kategori Beban Berisiko Tinggi
-                  </div>
-                  <p className="font-body-sm text-[12px] text-on-surface-variant mt-1 leading-relaxed">
-                    Pengeluaran kategori entertainment, lounge, karaoke, representasi mewah non-operasional inti.
+                  <div className="font-semibold text-slate-900">4. Kategori Beban Berisiko Tinggi</div>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    Beban kategori entertainment, karaoke, lounge, representasi mewah non-operasional.
                   </p>
                 </div>
-                <span className="font-data-mono font-bold text-[13px] px-3 py-1 rounded-lg bg-tertiary text-on-tertiary shrink-0">
+                <span className="font-data-mono font-bold text-[11px] px-2 py-0.5 rounded bg-rose-100 text-rose-800 shrink-0">
                   +20 Poin
                 </span>
               </div>
 
-              <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-start justify-between gap-4">
+              <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-start justify-between gap-3">
                 <div>
-                  <div className="font-headline-sm text-[15px] font-bold text-on-surface">
-                    5. Pengajuan di Luar Jam / Hari Kerja
-                  </div>
-                  <p className="font-body-sm text-[12px] text-on-surface-variant mt-1 leading-relaxed">
-                    Unggah berkas atau transaksi pada dini hari (21:00 - 05:00 WIB) atau hari libur akhir pekan.
+                  <div className="font-semibold text-slate-900">5. Di Luar Jam / Hari Kerja</div>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    Transaksi diajukan pada dini hari (21:00 - 05:00 WIB) atau pada hari libur akhir pekan.
                   </p>
                 </div>
-                <span className="font-data-mono font-bold text-[13px] px-3 py-1 rounded-lg bg-secondary text-on-secondary shrink-0">
+                <span className="font-data-mono font-bold text-[11px] px-2 py-0.5 rounded bg-amber-100 text-amber-800 shrink-0">
                   +15 Poin
                 </span>
               </div>
 
-              <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-start justify-between gap-4">
+              <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-start justify-between gap-3">
                 <div>
-                  <div className="font-headline-sm text-[15px] font-bold text-on-surface">
-                    6. Nominal Bulat Sempurna Tanpa Pajak
-                  </div>
-                  <p className="font-body-sm text-[12px] text-on-surface-variant mt-1 leading-relaxed">
-                    Nominal genap bulat (misal Rp 10.000.000 atau Rp 50.000.000) tanpa komponen pecahan PPN/PPh tertera.
+                  <div className="font-semibold text-slate-900">6. Nominal Bulat Sempurna</div>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    Nominal genap bulat (misal Rp 10.000.000) tanpa komponen pecahan pajak PPN/PPh tertera.
                   </p>
                 </div>
-                <span className="font-data-mono font-bold text-[13px] px-3 py-1 rounded-lg bg-secondary text-on-secondary shrink-0">
+                <span className="font-data-mono font-bold text-[11px] px-2 py-0.5 rounded bg-amber-100 text-amber-800 shrink-0">
                   +10 Poin
                 </span>
               </div>

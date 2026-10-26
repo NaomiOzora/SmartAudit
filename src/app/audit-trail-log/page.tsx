@@ -56,22 +56,22 @@ export default function AuditTrailLogPage() {
       <Navbar currentRole="AUDITOR" />
       <AuditorSidebar />
 
-      <div className="lg:pl-64 flex flex-col min-h-screen bg-surface pt-16">
-        <main className="w-full flex-1 px-4 sm:px-6 lg:px-8 py-6">
-          <div className="w-full max-w-7xl mx-auto space-y-6">
+      <div className="lg:pl-60 flex flex-col min-h-screen bg-slate-50 pt-14">
+        <main className="w-full flex-1 px-4 sm:px-6 lg:px-8 py-5">
+          <div className="w-full max-w-7xl mx-auto space-y-5">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <h1 className="font-headline-lg text-headline-lg text-on-surface font-bold text-[24px]">
+                  <h1 className="text-xl font-bold text-slate-900 tracking-tight">
                     Jejak Audit Forensik Kriptografis (Audit Trail)
                   </h1>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm font-semibold">
-                    <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/60 text-[11px] font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                     ISO 27001 Immutable Log
                   </span>
                 </div>
-                <p className="font-body-md text-body-md text-on-surface-variant">
+                <p className="text-xs text-slate-500">
                   Catatan historis putusan verifikasi dan eskalasi audit yang dilindungi tanda tangan kriptografis SHA-256.
                 </p>
               </div>
@@ -79,40 +79,40 @@ export default function AuditTrailLogPage() {
               <button
                 type="button"
                 onClick={fetchLogs}
-                className="h-9 px-4 rounded-xl border border-outline-variant bg-surface-container-lowest text-on-surface font-label-md text-label-md flex items-center gap-1.5 hover:bg-surface-container transition-colors shadow-sm self-start font-semibold"
+                className="h-8 px-3 rounded-lg border border-slate-200 bg-white text-slate-700 text-xs font-medium flex items-center gap-1.5 hover:bg-slate-50 hover:border-slate-300 transition-colors shadow-xs self-start"
               >
-                <span className="material-symbols-outlined text-[16px] text-primary">sync</span>
+                <span className="material-symbols-outlined text-[15px] text-blue-600">sync</span>
                 <span>Segarkan Log</span>
               </button>
             </div>
 
             {/* Vertical Timeline & Audit Rail */}
-            <div className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/30">
-              <div className="flex items-center justify-between pb-4 mb-6 border-b border-surface-container">
-                <span className="font-headline-sm text-[16px] font-bold text-on-surface">
+            <div className="bg-white rounded-xl p-5 shadow-xs border border-slate-200/80">
+              <div className="flex items-center justify-between pb-3 mb-5 border-b border-slate-100">
+                <span className="text-xs font-semibold text-slate-800">
                   Rangkaian Kronologis Putusan & Eskalasi
                 </span>
-                <span className="font-data-mono text-[11px] text-on-surface-variant font-semibold">
+                <span className="font-mono text-[11px] text-slate-500">
                   Total Entri: {logs.length}
                 </span>
               </div>
 
               {loading ? (
-                <div className="py-16 text-center text-on-surface-variant">
-                  <span className="material-symbols-outlined text-[32px] animate-spin text-primary">
+                <div className="py-12 text-center text-slate-400">
+                  <span className="material-symbols-outlined text-[24px] animate-spin text-blue-600">
                     sync
                   </span>
-                  <p className="mt-2 text-body-sm">Memverifikasi tanda tangan kriptografis...</p>
+                  <p className="mt-1.5 text-xs">Memverifikasi tanda tangan kriptografis...</p>
                 </div>
               ) : logs.length === 0 ? (
-                <div className="py-16 text-center text-on-surface-variant">
-                  <span className="material-symbols-outlined text-[40px] text-outline">
+                <div className="py-12 text-center text-slate-400">
+                  <span className="material-symbols-outlined text-[32px] text-slate-300">
                     history_edu
                   </span>
-                  <p className="mt-2 font-semibold">Belum ada jejak audit tercatat</p>
+                  <p className="mt-1.5 font-medium text-xs text-slate-600">Belum ada jejak audit tercatat</p>
                 </div>
               ) : (
-                <div className="relative border-l-2 border-surface-container ml-4 pl-6 space-y-8">
+                <div className="relative border-l-2 border-slate-100 ml-3 pl-5 space-y-6">
                   {logs.map((log) => {
                     const isApproved = log.action === "APPROVED" || log.action === "AUTO_APPROVED";
                     const isRejected = log.action === "REJECTED";
@@ -121,64 +121,64 @@ export default function AuditTrailLogPage() {
                       <div key={log.id} className="relative group">
                         {/* Timeline Node Icon */}
                         <div
-                          className={`absolute -left-[35px] top-0 w-6 h-6 rounded-full flex items-center justify-center text-on-primary shadow-sm ${
+                          className={`absolute -left-[27px] top-0.5 w-5 h-5 rounded-full flex items-center justify-center text-white shadow-xs ${
                             isApproved
-                              ? "bg-secondary"
+                              ? "bg-emerald-600"
                               : isRejected
-                              ? "bg-tertiary"
-                              : "bg-primary"
+                              ? "bg-rose-600"
+                              : "bg-blue-600"
                           }`}
                         >
-                          <span className="material-symbols-outlined text-[14px]">
+                          <span className="material-symbols-outlined text-[12px]">
                             {isApproved ? "check" : isRejected ? "close" : "verified_user"}
                           </span>
                         </div>
 
                         {/* Log Item Content Box */}
-                        <div className="bg-surface-container-low p-5 rounded-2xl border border-outline-variant/30 space-y-3 hover:shadow-sm transition-shadow">
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div className="bg-slate-50/70 p-3.5 rounded-lg border border-slate-200/70 space-y-2 hover:bg-slate-50 transition-colors">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                             <div className="flex items-center gap-2 flex-wrap">
                               <span
-                                className={`px-2.5 py-0.5 rounded-full font-label-sm text-[11px] font-bold ${
+                                className={`px-2 py-0.5 rounded text-[11px] font-semibold ${
                                   isApproved
-                                    ? "bg-secondary-fixed text-on-secondary-fixed-variant"
+                                    ? "bg-emerald-50 text-emerald-700 border border-emerald-200/50"
                                     : isRejected
-                                    ? "bg-error-container text-tertiary"
-                                    : "bg-surface-container text-on-surface"
+                                    ? "bg-rose-50 text-rose-700 border border-rose-200/50"
+                                    : "bg-amber-50 text-amber-700 border border-amber-200/50"
                                 }`}
                               >
                                 {log.action}
                               </span>
-                              <span className="font-data-mono font-bold text-primary text-[14px]">
+                              <span className="font-mono font-medium text-blue-600 text-xs">
                                 {log.transaction?.code || "TX-EVENT"}
                               </span>
-                              <span className="text-on-surface-variant text-[12px]">
-                                &bull; Rekanan: {log.transaction?.vendor} (Rp{" "}
+                              <span className="text-slate-500 text-[11px]">
+                                &bull; {log.transaction?.vendor} (Rp{" "}
                                 {(log.transaction?.amount || 0).toLocaleString("id-ID")})
                               </span>
                             </div>
 
-                            <span className="font-data-mono text-[12px] text-on-surface-variant whitespace-nowrap">
+                            <span className="font-mono text-[11px] text-slate-400 whitespace-nowrap">
                               {new Date(log.createdAt).toLocaleString("id-ID")}
                             </span>
                           </div>
 
                           {/* Notes */}
-                          <p className="font-body-md text-[13px] text-on-surface leading-relaxed">
+                          <p className="text-xs text-slate-700 leading-relaxed font-normal">
                             {log.notes}
                           </p>
 
                           {/* Cryptographic Signature Footer */}
-                          <div className="pt-2 border-t border-outline-variant/20 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px]">
-                            <div className="flex items-center gap-1.5 text-on-surface-variant">
-                              <span className="material-symbols-outlined text-[14px] text-secondary">
+                          <div className="pt-2 border-t border-slate-200/60 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-[11px]">
+                            <div className="flex items-center gap-1.5 text-slate-500">
+                              <span className="material-symbols-outlined text-[13px] text-emerald-600">
                                 verified
                               </span>
-                              <span>Pemeriksa: <strong>{log.auditorName}</strong></span>
+                              <span>Pemeriksa: <strong className="text-slate-700 font-medium">{log.auditorName}</strong></span>
                             </div>
 
-                            <div className="flex items-center gap-2 font-data-mono text-on-surface-variant">
-                              <span className="truncate max-w-[280px]">
+                            <div className="flex items-center gap-2 font-mono text-slate-500">
+                              <span className="truncate max-w-[240px] text-[10px] text-slate-400">
                                 {log.tamperHash || "sha256:d8f3e284a91cf923184b912adfc01928"}
                               </span>
                               <button
@@ -188,9 +188,9 @@ export default function AuditTrailLogPage() {
                                     log.tamperHash || "sha256:d8f3e284a91cf923184b912adfc01928"
                                   )
                                 }
-                                className="text-primary hover:underline font-semibold flex items-center gap-0.5"
+                                className="text-blue-600 hover:text-blue-700 hover:underline font-medium flex items-center gap-0.5 transition-colors"
                               >
-                                <span className="material-symbols-outlined text-[13px]">
+                                <span className="material-symbols-outlined text-[12px]">
                                   content_copy
                                 </span>
                                 <span>{copiedHash === log.tamperHash ? "Disalin!" : "Salin"}</span>

@@ -7,8 +7,10 @@
   body {
     margin: 0;
     padding: 0;
-    background-color: #faf8ff;
-    color: #131b2e;
+    background-color: #f8fafc; /* Softer, calmer slate-50 background */
+    color: #0f172a; /* Slate 900 for high-clarity reading */
+    font-size: 14px; /* Standard ergonomic 14px base font */
+    line-height: 1.5;
   }
 
   /* Tabular numbers for clean financial audit figures */
@@ -18,20 +20,20 @@
   }
 }
 
-/* Custom scrollbars */
+/* Custom subtle scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #f2f3ff;
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #c3c6d7;
+  background: #cbd5e1;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #737686;
+  background: #94a3b8;
 }
 
 /* Material Symbols Outlined font-variation-settings */
@@ -39,7 +41,7 @@
   font-family: 'Material Symbols Outlined';
   font-weight: normal;
   font-style: normal;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 1;
   letter-spacing: normal;
   text-transform: none;

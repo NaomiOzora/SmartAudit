@@ -29,24 +29,24 @@ export default function AuditorSidebar() {
       icon: "sync_alt",
     },
     {
-      label: "Panduan Kepatuhan",
+      label: "Panduan SOP",
       href: "/panduan-kepatuhan",
       icon: "menu_book",
     },
   ];
 
   return (
-    <aside className="hidden lg:flex fixed left-0 top-16 bottom-0 w-64 bg-surface-container-lowest z-40 flex-col py-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.03)] border-r border-surface-container">
-      <div className="px-space-lg pb-space-md flex items-center justify-between">
-        <span className="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase font-semibold">
+    <aside className="hidden lg:flex fixed left-0 top-14 bottom-0 w-60 bg-white z-40 flex-col py-4 border-r border-slate-200 shadow-[1px_0_3px_rgba(0,0,0,0.01)]">
+      <div className="px-4 pb-3 flex items-center justify-between border-b border-slate-100 mb-2">
+        <span className="text-[11px] text-slate-500 tracking-wider uppercase font-semibold">
           Investigasi & Audit
         </span>
-        <span className="font-label-sm text-[10px] bg-tertiary-container/10 text-tertiary px-1.5 py-0.5 rounded font-bold">
+        <span className="text-[10px] bg-rose-50 text-rose-700 px-1.5 py-0.5 rounded font-semibold border border-rose-200">
           STRICT
         </span>
       </div>
 
-      <nav className="flex-1 px-space-md flex flex-col gap-1">
+      <nav className="flex-1 px-3 flex flex-col gap-0.5">
         {navItems.map((item) => {
           const isActive = item.activeMatch
             ? pathname.startsWith(item.activeMatch)
@@ -56,34 +56,36 @@ export default function AuditorSidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-space-md px-space-md py-2.5 rounded-xl transition-all font-body-md text-body-md ${
+              className={`flex items-center gap-2.5 px-3 py-2 rounded-lg transition-colors text-[13px] ${
                 isActive
-                  ? "bg-primary-container text-on-primary-container font-semibold shadow-sm"
-                  : "text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface"
+                  ? "bg-blue-50 text-blue-700 font-semibold border border-blue-100"
+                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium"
               }`}
             >
-              <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
+              <span className={`material-symbols-outlined text-[18px] ${isActive ? "text-blue-600" : "text-slate-400"}`}>
+                {item.icon}
+              </span>
               <span>{item.label}</span>
             </Link>
           );
         })}
       </nav>
 
-      {/* Engine Status & Rigor Box */}
-      <div className="px-space-md pt-space-md mt-auto">
-        <div className="p-space-md rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col gap-2">
+      {/* Engine Status Box */}
+      <div className="px-3 pt-3 mt-auto">
+        <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 flex flex-col gap-1.5">
           <div className="flex items-center justify-between">
-            <span className="font-label-sm text-[11px] text-on-surface-variant uppercase font-semibold">
-              AI Verification v4.2
+            <span className="text-[11px] text-slate-500 uppercase font-semibold">
+              AI Verification v4.0
             </span>
-            <span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
           </div>
-          <div className="font-body-sm text-body-sm text-on-surface font-medium flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[16px] text-primary">verified</span>
+          <div className="text-[12px] text-slate-800 font-medium flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-[15px] text-blue-600">verified</span>
             <span>pHash & Gemini Ready</span>
           </div>
-          <p className="text-[11px] text-on-surface-variant leading-tight">
-            SLA Verifikasi &le; 5.0s &bull; Kepatuhan ISO 27001
+          <p className="text-[11px] text-slate-500 leading-tight">
+            SLA Ekstraksi &le; 5.0s &bull; ISO 27001
           </p>
         </div>
       </div>
