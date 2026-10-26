@@ -5,6 +5,19 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import AuditorSidebar from "@/components/AuditorSidebar";
 import { useAuth } from "@/lib/auth";
+import {
+  ShieldAlert,
+  ShieldCheck,
+  Check,
+  X,
+  RefreshCw,
+  Copy,
+  CheckCircle2,
+  History,
+  ArrowRight,
+  LogOut,
+  FileClock,
+} from "lucide-react";
 
 interface AuditLogItem {
   id: string;
@@ -58,29 +71,29 @@ export default function AuditTrailLogPage() {
     return (
       <>
         <Navbar currentRole="STAFF" />
-        <main className="w-full min-h-screen pt-20 px-4 flex items-center justify-center bg-slate-50">
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs max-w-md text-center">
-            <div className="w-10 h-10 rounded-full bg-rose-50 text-rose-600 inline-flex items-center justify-center mx-auto mb-3">
-              <span className="material-symbols-outlined text-[20px]">security</span>
+        <main className="w-full min-h-screen pt-24 px-4 flex items-center justify-center bg-slate-50">
+          <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-md max-w-md text-center">
+            <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-600 inline-flex items-center justify-center mx-auto mb-4">
+              <ShieldAlert className="w-6 h-6" />
             </div>
-            <h2 className="text-sm font-semibold text-slate-900">Akses Khusus Auditor Forensik</h2>
-            <p className="text-xs text-slate-600 mt-1 mb-4 leading-relaxed">
+            <h2 className="text-lg font-bold text-slate-900">Akses Khusus Auditor Forensik</h2>
+            <p className="text-sm text-slate-600 mt-2 mb-6 leading-relaxed">
               Anda saat ini masuk sebagai <strong>{user.name}</strong> (Staf Keuangan). Jejak log audit forensik hanya dapat ditinjau oleh Auditor.
             </p>
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center gap-3">
               <Link
                 href="/beranda-staf"
                 prefetch={false}
-                className="h-8 px-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium inline-flex items-center gap-1.5 transition-colors"
+                className="h-10 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold inline-flex items-center gap-2 transition-colors shadow-xs"
               >
                 <span>Kembali ke Beranda Staf</span>
               </Link>
               <button
                 type="button"
                 onClick={logout}
-                className="h-8 px-3 rounded-lg border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-medium inline-flex items-center gap-1.5 transition-colors"
+                className="h-10 px-4 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 text-sm font-semibold inline-flex items-center gap-2 transition-colors"
               >
-                <span className="material-symbols-outlined text-[14px]">logout</span>
+                <LogOut className="w-4 h-4" />
                 <span>Keluar</span>
               </button>
             </div>
@@ -95,60 +108,56 @@ export default function AuditTrailLogPage() {
       <Navbar currentRole="AUDITOR" />
       <AuditorSidebar />
 
-      <div className="lg:pl-60 flex flex-col min-h-screen bg-slate-50 pt-14">
-        <main className="w-full flex-1 px-4 sm:px-6 py-5">
-          <div className="w-full max-w-7xl mx-auto space-y-4">
+      <div className="lg:pl-64 flex flex-col min-h-screen bg-slate-50 pt-16">
+        <main className="w-full flex-1 px-4 sm:px-6 lg:px-8 py-6">
+          <div className="w-full max-w-7xl mx-auto space-y-6">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <div className="inline-flex items-center gap-2 flex-wrap mb-1">
-                  <h1 className="text-xl font-bold text-slate-900 tracking-tight">
-                    Jejak Audit (Audit Trail)
+                <div className="inline-flex items-center gap-3 flex-wrap mb-1">
+                  <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+                    Jejak Audit Forensik Kriptografis (Audit Trail)
                   </h1>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
                     ISO 27001 Immutable Log
                   </span>
                 </div>
-                <p className="text-xs text-slate-500">
-                  Rekaman kronologis putusan verifikasi dilindungi tanda tangan integritas SHA-256.
+                <p className="text-sm text-slate-500">
+                  Rekaman kronologis putusan verifikasi dilindungi tanda tangan integritas SHA-256 yang kebal manipulasi data.
                 </p>
               </div>
 
               <button
                 type="button"
                 onClick={fetchLogs}
-                className="h-8 px-3 rounded-lg border border-slate-200 bg-white text-slate-700 text-xs font-medium inline-flex items-center gap-1.5 hover:bg-slate-50 transition-colors shadow-xs self-start"
+                className="h-10 px-4 rounded-xl border border-slate-200 bg-white text-slate-700 text-sm font-semibold inline-flex items-center gap-2 hover:bg-slate-50 transition-colors shadow-xs self-start"
               >
-                <span className="material-symbols-outlined text-[15px] text-blue-600 shrink-0">sync</span>
+                <RefreshCw className="w-4 h-4 text-blue-600 shrink-0" />
                 <span>Segarkan Log</span>
               </button>
             </div>
 
             {/* Timeline Container */}
-            <div className="bg-white rounded-xl p-5 shadow-xs border border-slate-200/80">
-              <div className="flex items-center justify-between pb-3 mb-5 border-b border-slate-100">
-                <span className="text-xs font-semibold text-slate-800">
-                  Rangkaian Kronologis Putusan & Eskalasi
+            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-xs border border-slate-200/90">
+              <div className="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
+                <span className="text-base font-bold text-slate-900">
+                  Rangkaian Kronologis Putusan & Eskalasi Audit
                 </span>
-                <span className="font-mono text-[11px] text-slate-500">
+                <span className="font-mono text-xs text-slate-500 font-semibold">
                   Total Entri: {logs.length}
                 </span>
               </div>
 
               {loading ? (
-                <div className="py-12 text-center text-slate-400">
-                  <span className="material-symbols-outlined text-[24px] animate-spin text-blue-600">
-                    sync
-                  </span>
-                  <p className="mt-1.5 text-xs">Memverifikasi tanda tangan kriptografis...</p>
+                <div className="py-16 text-center text-slate-400">
+                  <FileClock className="w-10 h-10 animate-spin text-blue-600 mx-auto" />
+                  <p className="mt-3 text-sm font-medium">Memverifikasi tanda tangan kriptografis...</p>
                 </div>
               ) : logs.length === 0 ? (
-                <div className="py-12 text-center text-slate-400">
-                  <span className="material-symbols-outlined text-[32px] text-slate-300">
-                    history_edu
-                  </span>
-                  <p className="mt-1.5 font-medium text-xs text-slate-600">Belum ada jejak audit tercatat</p>
+                <div className="py-16 text-center text-slate-400">
+                  <History className="w-12 h-12 text-slate-300 mx-auto" />
+                  <p className="mt-3 font-semibold text-base text-slate-600">Belum ada jejak audit tercatat</p>
                 </div>
               ) : (
                 <div className="space-y-0">
@@ -158,11 +167,11 @@ export default function AuditTrailLogPage() {
                     const isLast = index === logs.length - 1;
 
                     return (
-                      <div key={log.id} className="flex gap-4">
+                      <div key={log.id} className="flex gap-4 sm:gap-6">
                         {/* Mathematically Symmetrical Node Column */}
                         <div className="flex flex-col items-center">
                           <div
-                            className={`w-6 h-6 rounded-full inline-flex items-center justify-center text-white shrink-0 shadow-xs ${
+                            className={`w-8 h-8 rounded-full inline-flex items-center justify-center text-white shrink-0 shadow-xs ${
                               isApproved
                                 ? "bg-emerald-600"
                                 : isRejected
@@ -170,20 +179,24 @@ export default function AuditTrailLogPage() {
                                 : "bg-blue-600"
                             }`}
                           >
-                            <span className="material-symbols-outlined text-[13px]">
-                              {isApproved ? "check" : isRejected ? "close" : "verified_user"}
-                            </span>
+                            {isApproved ? (
+                              <Check className="w-4 h-4" />
+                            ) : isRejected ? (
+                              <X className="w-4 h-4" />
+                            ) : (
+                              <ShieldCheck className="w-4 h-4" />
+                            )}
                           </div>
-                          {!isLast && <div className="w-0.5 flex-1 bg-slate-200 my-1"></div>}
+                          {!isLast && <div className="w-0.5 flex-1 bg-slate-200 my-2"></div>}
                         </div>
 
                         {/* Content Box */}
-                        <div className={`flex-1 ${!isLast ? "pb-5" : ""}`}>
-                          <div className="bg-slate-50 p-3.5 rounded-lg border border-slate-200/80 space-y-2 hover:bg-slate-100/60 transition-colors">
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
-                              <div className="inline-flex items-center gap-2 flex-wrap">
+                        <div className={`flex-1 ${!isLast ? "pb-6" : ""}`}>
+                          <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200/90 space-y-3 hover:bg-slate-100/60 transition-colors">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                              <div className="inline-flex items-center gap-2.5 flex-wrap">
                                 <span
-                                  className={`px-2 py-0.5 rounded text-[11px] font-semibold ${
+                                  className={`px-3 py-1 rounded-full text-xs font-bold ${
                                     isApproved
                                       ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                                       : isRejected
@@ -193,36 +206,34 @@ export default function AuditTrailLogPage() {
                                 >
                                   {log.action}
                                 </span>
-                                <span className="font-mono font-medium text-blue-600 text-xs">
+                                <span className="font-mono font-bold text-blue-600 text-sm">
                                   {log.transaction?.code || "TX-EVENT"}
                                 </span>
-                                <span className="text-slate-500 text-xs">
+                                <span className="text-slate-600 text-sm">
                                   &bull; {log.transaction?.vendor} (Rp{" "}
                                   {(log.transaction?.amount || 0).toLocaleString("id-ID")})
                                 </span>
                               </div>
 
-                              <span className="font-mono text-[11px] text-slate-400 whitespace-nowrap">
+                              <span className="font-mono text-xs text-slate-500 whitespace-nowrap">
                                 {new Date(log.createdAt).toLocaleString("id-ID")}
                               </span>
                             </div>
 
                             {/* Notes */}
-                            <p className="text-xs text-slate-700 leading-relaxed font-normal">
+                            <p className="text-sm text-slate-800 leading-relaxed font-normal">
                               {log.notes}
                             </p>
 
                             {/* Cryptographic Signature Footer */}
-                            <div className="pt-2 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-[11px]">
-                              <div className="inline-flex items-center gap-1.5 text-slate-500">
-                                <span className="material-symbols-outlined text-[13px] text-emerald-600 shrink-0">
-                                  verified
-                                </span>
-                                <span>Pemeriksa: <strong className="text-slate-700 font-medium">{log.auditorName}</strong></span>
+                            <div className="pt-3 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                              <div className="inline-flex items-center gap-2 text-slate-600">
+                                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                                <span>Pemeriksa: <strong className="text-slate-800 font-semibold">{log.auditorName}</strong></span>
                               </div>
 
-                              <div className="inline-flex items-center gap-2 font-mono text-slate-500">
-                                <span className="truncate max-w-[240px] text-[10px] text-slate-400">
+                              <div className="inline-flex items-center gap-2.5 font-mono text-slate-500">
+                                <span className="truncate max-w-[280px] text-xs text-slate-400">
                                   {log.tamperHash || "sha256:d8f3e284a91cf923184b912adfc01928"}
                                 </span>
                                 <button
@@ -232,11 +243,9 @@ export default function AuditTrailLogPage() {
                                       log.tamperHash || "sha256:d8f3e284a91cf923184b912adfc01928"
                                     )
                                   }
-                                  className="text-blue-600 hover:text-blue-700 hover:underline font-medium inline-flex items-center gap-0.5 transition-colors shrink-0"
+                                  className="text-blue-600 hover:text-blue-700 hover:underline font-bold inline-flex items-center gap-1 transition-colors shrink-0"
                                 >
-                                  <span className="material-symbols-outlined text-[12px]">
-                                    content_copy
-                                  </span>
+                                  <Copy className="w-3.5 h-3.5" />
                                   <span>{copiedHash === log.tamperHash ? "Disalin!" : "Salin"}</span>
                                 </button>
                               </div>
