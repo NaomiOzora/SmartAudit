@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import AuditorSidebar from "@/components/AuditorSidebar";
+import { useAuth } from "@/lib/auth";
 
 interface TransactionDetail {
   id: string;
@@ -57,6 +58,7 @@ export default function DetailInspeksiPage() {
   const params = useParams();
   const router = useRouter();
   const id = params?.id as string;
+  const { user, logout } = useAuth();
 
   const [transaction, setTransaction] = useState<TransactionDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -124,7 +126,7 @@ export default function DetailInspeksiPage() {
           transactionId: transaction.id,
           action: decision,
           notes: auditNotes,
-          auditorName: "Bambang H. (Auditor Forensik)",
+          auditorName: user?.name ? `${user.name} (Auditor Forensik)` : "Bambang H. (Auditor Forensik)",
         }),
       });
 
@@ -150,6 +152,42 @@ export default function DetailInspeksiPage() {
       setIsSubmittingDecision(false);
     }
   };
+
+  if (user && user.role !== "AUDITOR") {
+    return (
+      <>
+        <Navbar currentRole="STAFF" />
+        <main className="w-full min-h-screen pt-20 px-4 flex items-center justify-center bg-slate-50">
+          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs max-w-md text-center">
+            <div className="w-10 h-10 rounded-full bg-rose-50 text-rose-600 inline-flex items-center justify-center mx-auto mb-3">
+              <span className="material-symbols-outlined text-[20px]">security</span>
+            </div>
+            <h2 className="text-sm font-semibold text-slate-900">Akses Khusus Auditor Forensik</h2>
+            <p className="text-xs text-slate-600 mt-1 mb-4 leading-relaxed">
+              Anda saat ini masuk sebagai <strong>{user.name}</strong> (Staf Keuangan). Berkas detail inspeksi forensik hanya dapat ditinjau oleh Auditor.
+            </p>
+            <div className="flex items-center justify-center gap-2">
+              <Link
+                href="/beranda-staf"
+                prefetch={false}
+                className="h-8 px-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium inline-flex items-center gap-1.5 transition-colors"
+              >
+                <span>Kembali ke Beranda Staf</span>
+              </Link>
+              <button
+                type="button"
+                onClick={logout}
+                className="h-8 px-3 rounded-lg border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-medium inline-flex items-center gap-1.5 transition-colors"
+              >
+                <span className="material-symbols-outlined text-[14px]">logout</span>
+                <span>Keluar</span>
+              </button>
+            </div>
+          </div>
+        </main>
+      </>
+    );
+  }
 
   if (loading) {
     return (
