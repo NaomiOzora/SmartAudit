@@ -1,0 +1,673 @@
+<!DOCTYPE html><html lang="id" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-error": "#ffffff", "on-background": "#131b2e", "on-tertiary-container": "#ffecea", "on-secondary-container": "#004666", "secondary": "#006591", "tertiary-fixed-dim": "#ffb4ab", "surface-tint": "#0053db", "tertiary": "#ae0010", "primary-fixed-dim": "#b4c5ff", "surface-container-lowest": "#ffffff", "inverse-primary": "#b4c5ff", "on-surface": "#131b2e", "on-primary-container": "#eeefff", "tertiary-fixed": "#ffdad6", "on-error-container": "#93000a", "error-container": "#ffdad6", "surface-container-high": "#e2e7ff", "on-surface-variant": "#434655", "primary-fixed": "#dbe1ff", "on-secondary-fixed": "#001e2f", "background": "#faf8ff", "outline-variant": "#c3c6d7", "on-tertiary-fixed": "#410002", "secondary-container": "#39b8fd", "error": "#ba1a1a", "surface-variant": "#dae2fd", "primary": "#004ac6", "secondary-fixed-dim": "#89ceff", "inverse-on-surface": "#eef0ff", "surface-container-highest": "#dae2fd", "surface-container": "#eaedff", "outline": "#737686", "on-primary-fixed": "#00174b", "inverse-surface": "#283044", "on-tertiary-fixed-variant": "#93000b", "surface-container-low": "#f2f3ff", "surface": "#faf8ff", "primary-container": "#2563eb", "tertiary-container": "#d52022", "surface-dim": "#d2d9f4", "surface-bright": "#faf8ff", "on-primary-fixed-variant": "#003ea8", "secondary-fixed": "#c9e6ff", "on-secondary-fixed-variant": "#004c6e", "on-tertiary": "#ffffff", "on-secondary": "#ffffff", "on-primary": "#ffffff" }, borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, spacing: { "margin-lg": "2rem", "gutter": "1rem", "gutter-lg": "1.5rem", "space-md": "1rem", "space-lg": "1.5rem", "space-xs": "0.25rem", "margin-md": "1.5rem", "space-sm": "0.5rem", "space-xl": "2rem", "margin": "1rem" }, fontFamily: { "headline-sm": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "body-md": ["Inter"], "headline-lg": ["Plus Jakarta Sans"], "label-sm": ["Inter"], "display-lg-mobile": ["Plus Jakarta Sans"], "body-sm": ["Inter"], "data-mono": ["Inter"], "label-md": ["Inter"], "body-lg": ["Inter"] }, fontSize: { "headline-sm": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "display-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "data-mono": ["13px", { "lineHeight": "18px", "letterSpacing": "-0.01em", "fontWeight": "500" }], "label-md": ["13px", { "lineHeight": "16px", "fontWeight": "500" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }] } } } }</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 h-16 z-50 bg-surface-container-lowest/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="w-full h-16 px-gutter-lg flex items-center justify-between"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-sm"><div class="w-8 h-8 rounded-xl bg-primary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[20px]">verified_user</span></div><span class="font-headline-md text-headline-md tracking-tight text-on-surface font-bold">SmartAudit</span></div><div class="hidden sm:flex items-center px-space-sm py-space-xs rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm"><span class="">AUDITOR FORENSIK</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg bg-surface-container-low text-on-surface font-label-md text-label-md"><span class="material-symbols-outlined text-[16px] text-primary-container">swap_horiz</span><span class="hidden md:inline text-on-surface-variant font-body-sm text-body-sm">Mode:</span><span class="font-semibold text-primary-container">Auditor Forensik</span></div><button class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-surface-container hover:text-on-surface text-on-surface-variant transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span></button><div class="h-6 w-px bg-outline-variant/30 hidden sm:block"></div><div class="flex items-center gap-space-sm"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="hidden lg:flex flex-col"><span class="font-label-md text-label-md text-on-surface leading-tight">Bambang H.</span><span class="font-label-sm text-label-sm text-on-surface-variant">NIP. 19840212</span></div></div></div></div></header><aside class="fixed left-0 top-16 bottom-0 w-64 bg-surface-container-lowest z-40 flex flex-col py-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.03)]"><div class="px-space-lg pb-space-md"><span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase">Investigasi &amp; Audit</span></div><nav class="flex-1 px-space-md flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-semibold shadow-sm"><a aria-current="page" class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg transition-colors bg-primary-container text-on-primary-container font-semibold shadow-sm" data-path="antrean-review" href="#"><span class="material-symbols-outlined text-[20px]">inbox</span><span class="font-body-md text-body-md">Antrean Review</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="detail-inspeksi" href="#"><span class="material-symbols-outlined text-[20px]">document_scanner</span><span class="font-body-md text-body-md">Detail Inspeksi OCR</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="laporan-anomali" href="#"><span class="material-symbols-outlined text-[20px]">warning</span><span class="font-body-md text-body-md">Laporan Anomali</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="audit-trail" href="#"><span class="material-symbols-outlined text-[20px]">history_edu</span><span class="font-body-md text-body-md">Audit Trail Log</span></a></nav><div class="px-space-md pt-space-md"><div class="p-space-md rounded-xl bg-surface-container-low flex flex-col gap-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant">Sistem Deteksi Otomatis</span><div class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span><span class="font-body-sm text-body-sm text-on-surface">OCR Engine Siap</span></div></div></div></aside><div class="pl-64"><main class="w-full min-h-screen pt-16 px-gutter-lg pb-margin-lg bg-surface"><div class="flex flex-col w-full">
+<!-- Top Workspace Context & Role Switcher -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md mb-margin-lg">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Antrean Review Transaksi Berisiko</span>
+<span class="inline-flex items-center gap-space-xs px-space-sm py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+          Akses Auditor Forensik
+        </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+        Pemeriksaan anomali pengeluaran sebelum pemindahbukuan. Dikelola otomatis oleh AI Verification v4.2.
+      </p>
+</div>
+<div class="flex items-center gap-space-sm">
+<a class="inline-flex items-center gap-space-sm px-space-md py-space-sm rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-all duration-150 shadow-sm" href="#">
+<span class="material-symbols-outlined text-[18px] text-primary">switch_account</span>
+<span class="">Beralih ke Tampilan Staf</span>
+</a>
+<button class="w-9 h-9 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant flex items-center justify-center transition-colors shadow-sm" title="Refresh antrean" type="button">
+<span class="material-symbols-outlined text-[18px]">sync</span>
+</button>
+</div>
+</div>
+<!-- Minimalist Executive Metrics (3 High-Breathing Cards) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg mb-margin-lg">
+<!-- Metric 1: Need Action -->
+<div class="relative overflow-hidden bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Perlu Tindakan</span>
+<div class="flex items-baseline gap-space-sm mt-space-xs">
+<span class="font-display-lg text-display-lg text-on-surface tracking-tight font-bold">6</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">berkas kritis</span>
+</div>
+</div>
+<span class="inline-flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">priority_high</span>
+          Antrean Tertunda
+        </span>
+</div>
+<div class="mt-space-md pt-space-sm flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span class="">Estimasi eksposur: <strong>Rp 148,25 jt</strong></span>
+<span class="text-tertiary font-semibold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span> 2 kasus baru
+        </span>
+</div>
+</div>
+<!-- Metric 2: Cleared Today -->
+<div class="relative overflow-hidden bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Transaksi Lolos Hari Ini</span>
+<div class="flex items-baseline gap-space-sm mt-space-xs">
+<span class="font-display-lg text-display-lg text-on-surface tracking-tight font-bold">42</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">dari 48 total</span>
+</div>
+</div>
+<span class="inline-flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-surface-container-high text-secondary font-label-sm text-label-sm font-semibold"><span class="material-symbols-outlined text-[14px]">check_circle</span>
+          Tuntas
+        </span>
+</div>
+<div class="mt-space-md pt-space-sm flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span class="">Rata-rata audit: <strong>2,4 menit/kasus</strong></span>
+<span class="text-secondary font-semibold">87.5% selesai</span>
+</div>
+</div>
+<!-- Metric 3: AI Accuracy -->
+<div class="relative overflow-hidden bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Akurasi Sistem AI</span>
+<div class="flex items-baseline gap-space-sm mt-space-xs">
+<span class="font-display-lg text-display-lg text-primary tracking-tight font-bold">99.4%</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">tingkat kepastian</span>
+</div>
+</div>
+
+</div>
+<div class="mt-space-md pt-space-sm flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span class="">False-positive rate: <strong>0.38%</strong></span>
+<span class="text-on-surface font-semibold">Normal (Benchmark &lt;1%)</span>
+</div>
+</div>
+</div>
+<!-- Clean, Spacious Filter Control Bar -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm mb-space-lg flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-md">
+<!-- Search Field -->
+<div class="relative flex-1 max-w-lg">
+<span class="material-symbols-outlined absolute left-space-md top-1/2 -translate-y-1/2 text-[18px] text-outline">search</span>
+<input class="w-full h-10 pl-10 pr-space-md bg-surface-container-low rounded-xl font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 transition-all" id="search-input" placeholder="Cari ID transaksi, nama vendor, atau pemohon..." type="text">
+</div>
+<!-- Filter Buttons & Dropdowns -->
+<div class="flex items-center gap-space-sm flex-wrap">
+<!-- Risk Level Segmented Buttons -->
+<div class="inline-flex p-1 bg-surface-container-low rounded-xl">
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm font-semibold transition-colors" type="button">
+          Semua (6)
+        </button>
+<button class="px-space-md py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" type="button">
+          Tinggi (&gt;70%)
+        </button>
+<button class="px-space-md py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" type="button">
+          Sedang (40-70%)
+        </button>
+</div>
+<!-- Division Filter Dropdown -->
+<div class="relative">
+<select class="h-10 pl-space-md pr-8 bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md rounded-xl appearance-none cursor-pointer focus:outline-none transition-colors">
+<option value="">Semua Divisi</option>
+<option value="pengadaan">Pengadaan &amp; Logistik</option>
+<option value="ti">Teknologi &amp; Infrastruktur</option>
+<option value="operasional">Operasional Lapangan</option>
+<option value="pemasaran">Pemasaran &amp; Humas</option>
+</select>
+<span class="material-symbols-outlined absolute right-space-sm top-1/2 -translate-y-1/2 text-[18px] text-outline pointer-events-none">expand_more</span>
+</div>
+<!-- Date Sort Pill -->
+<button class="h-10 px-space-md bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md rounded-xl inline-flex items-center gap-space-xs transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">sort</span>
+<span class="">Terbaru</span>
+</button>
+</div>
+</div>
+<!-- Primary Section: Modern Clean Table + Inline Preview Layout -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-start">
+<!-- Table Container (8 Cols on XL) -->
+<div class="xl:col-span-8 bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+<!-- Table Header & Action Row -->
+<div class="px-space-lg py-space-md flex flex-wrap items-center justify-between gap-space-md bg-surface-container-lowest border-b border-surface-container"><div class="flex items-center gap-space-sm flex-wrap"><span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Daftar Transaksi Perlu Evaluasi</span><span class="px-space-sm py-0.5 rounded-full bg-surface-container font-data-mono text-label-sm text-on-surface-variant whitespace-nowrap">6 berkas aktif</span></div><div class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm whitespace-nowrap"><span class="material-symbols-outlined text-[16px] text-outline">sort</span><span class="">Sortir otomatis berdasarkan skor risiko tertinggi</span></div></div>
+<!-- The Modern Ledger View -->
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">
+<th class="py-space-md px-space-lg font-semibold tracking-wider">ID TRANSAKSI</th>
+<th class="py-space-md px-space-md font-semibold tracking-wider">PEMOHON &amp; DIVISI</th>
+<th class="py-space-md px-space-md font-semibold tracking-wider">TANGGAL</th>
+<th class="py-space-md px-space-md font-semibold tracking-wider text-right">NOMINAL</th>
+<th class="py-space-md px-space-md font-semibold tracking-wider">INDIKASI SINGKAT AI</th>
+<th class="py-space-md px-space-md font-semibold tracking-wider text-center">SKOR RISIKO</th>
+<th class="py-space-md px-space-lg font-semibold tracking-wider text-right">AKSI</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md" id="transaction-rows">
+<!-- Row 1: Split Bill (High Risk) - Active Selected State -->
+<tr class="transaction-row bg-error-container/25 hover:bg-error-container/40 cursor-pointer transition-colors" data-anomaly="Indikasi Split Bill (3x Pengajuan &lt; Rp 50jt)" data-applicant="Rian Pratama" data-date="24 Okt 2024, 14:22" data-dept="Pengadaan &amp; Logistik" data-hash="SHA256: d8f3...a91c" data-id="TX-88219" data-nominal="Rp 48.950.000" data-risk="92%" data-risk-type="high" data-vendor="PT Cahaya Mandiri Sukses">
+<td class="py-space-md px-space-lg font-data-mono text-primary font-semibold">
+                TX-88219
+              </td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Rian Pratama</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Pengadaan Logistik</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-on-surface-variant font-data-mono text-body-sm whitespace-nowrap">
+                24 Okt 2024
+              </td>
+<td class="py-space-md px-space-md font-data-mono text-on-surface font-semibold text-right whitespace-nowrap">
+                Rp 48.950.000
+              </td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-space-xs text-error font-semibold font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                  Indikasi Split Bill
+                </span>
+</td>
+<td class="py-space-md px-space-md text-center">
+<span class="inline-flex items-center px-space-sm py-0.5 rounded-full bg-error-container text-on-error-container font-data-mono text-label-sm font-bold">
+                  92%
+                </span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<button class="btn-inspect px-space-md py-1.5 rounded-xl bg-primary-container text-on-primary-container hover:bg-primary font-label-md text-label-md font-semibold transition-colors shadow-sm inline-flex items-center gap-1" type="button">
+<span class="">Periksa</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Duplicate Receipt (High Risk) -->
+<tr class="transaction-row hover:bg-surface-container-low cursor-pointer transition-colors" data-anomaly="Duplikasi Nota dengan TX-87912" data-applicant="Dina Marlina" data-date="24 Okt 2024, 11:05" data-dept="Teknologi &amp; Infrastruktur" data-hash="SHA256: 41b2...8f50" data-id="TX-88204" data-nominal="Rp 34.200.000" data-risk="88%" data-risk-type="high" data-vendor="CV Sumber Aneka IT">
+<td class="py-space-md px-space-lg font-data-mono text-primary font-semibold">
+                TX-88204
+              </td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Dina Marlina</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">TI &amp; Infrastruktur</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-on-surface-variant font-data-mono text-body-sm whitespace-nowrap">
+                24 Okt 2024
+              </td>
+<td class="py-space-md px-space-md font-data-mono text-on-surface font-semibold text-right whitespace-nowrap">
+                Rp 34.200.000
+              </td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-space-xs text-error font-semibold font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                  Duplikasi Nota
+                </span>
+</td>
+<td class="py-space-md px-space-md text-center">
+<span class="inline-flex items-center px-space-sm py-0.5 rounded-full bg-error-container text-on-error-container font-data-mono text-label-sm font-bold">
+                  88%
+                </span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<button class="btn-inspect px-space-md py-1.5 rounded-xl bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface font-label-md text-label-md font-semibold transition-colors inline-flex items-center gap-1" type="button">
+<span class="">Periksa</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: OCR Date Mismatch (Medium Risk) -->
+<tr class="transaction-row hover:bg-surface-container-low cursor-pointer transition-colors" data-anomaly="Tanggal Nota lampau &gt; 60 hari" data-applicant="Budi Santoso" data-date="23 Okt 2024, 16:40" data-dept="Pemasaran &amp; Komunikasi" data-hash="SHA256: 77a0...55de" data-id="TX-88190" data-nominal="Rp 22.800.000" data-risk="65%" data-risk-type="medium" data-vendor="Grand Hyatt Ballroom">
+<td class="py-space-md px-space-lg font-data-mono text-primary font-semibold">
+                TX-88190
+              </td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Budi Santoso</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Pemasaran &amp; Humas</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-on-surface-variant font-data-mono text-body-sm whitespace-nowrap">
+                23 Okt 2024
+              </td>
+<td class="py-space-md px-space-md font-data-mono text-on-surface font-semibold text-right whitespace-nowrap">
+                Rp 22.800.000
+              </td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-space-xs text-on-secondary-container font-semibold font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  Kedaluwarsa Nota
+                </span>
+</td>
+<td class="py-space-md px-space-md text-center">
+<span class="inline-flex items-center px-space-sm py-0.5 rounded-full bg-surface-container-high text-secondary font-data-mono text-label-sm font-bold">
+                  65%
+                </span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<button class="btn-inspect px-space-md py-1.5 rounded-xl bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface font-label-md text-label-md font-semibold transition-colors inline-flex items-center gap-1" type="button">
+<span class="">Periksa</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: Tax ID Inactive (High Risk) -->
+<tr class="transaction-row hover:bg-surface-container-low cursor-pointer transition-colors" data-anomaly="NPWP Vendor Tidak Terdaftar di DJP" data-applicant="Siti Nurhaliza" data-date="23 Okt 2024, 09:15" data-dept="Operasional Lapangan" data-hash="SHA256: bc29...12ff" data-id="TX-88177" data-nominal="Rp 19.500.000" data-risk="79%" data-risk-type="high" data-vendor="Koperasi Bina Warga Bersama">
+<td class="py-space-md px-space-lg font-data-mono text-primary font-semibold">
+                TX-88177
+              </td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Siti Nurhaliza</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Operasional Lapangan</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-on-surface-variant font-data-mono text-body-sm whitespace-nowrap">
+                23 Okt 2024
+              </td>
+<td class="py-space-md px-space-md font-data-mono text-on-surface font-semibold text-right whitespace-nowrap">
+                Rp 19.500.000
+              </td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-space-xs text-error font-semibold font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                  NPWP Tidak Valid
+                </span>
+</td>
+<td class="py-space-md px-space-md text-center">
+<span class="inline-flex items-center px-space-sm py-0.5 rounded-full bg-error-container text-on-error-container font-data-mono text-label-sm font-bold">
+                  79%
+                </span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<button class="btn-inspect px-space-md py-1.5 rounded-xl bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface font-label-md text-label-md font-semibold transition-colors inline-flex items-center gap-1" type="button">
+<span class="">Periksa</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Row 5: Price Outlier (Medium Risk) -->
+<tr class="transaction-row hover:bg-surface-container-low cursor-pointer transition-colors" data-anomaly="Harga Satuan 180% di Atas Rata-rata Katalog" data-applicant="Anton Wijaya" data-date="22 Okt 2024, 15:10" data-dept="Pengadaan &amp; Logistik" data-hash="SHA256: ee01...33aa" data-id="TX-88145" data-nominal="Rp 14.300.000" data-risk="58%" data-risk-type="medium" data-vendor="PT Perkasa Sarana Prima">
+<td class="py-space-md px-space-lg font-data-mono text-primary font-semibold">
+                TX-88145
+              </td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Anton Wijaya</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Pengadaan Logistik</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-on-surface-variant font-data-mono text-body-sm whitespace-nowrap">
+                22 Okt 2024
+              </td>
+<td class="py-space-md px-space-md font-data-mono text-on-surface font-semibold text-right whitespace-nowrap">
+                Rp 14.300.000
+              </td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-space-xs text-on-secondary-container font-semibold font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  Outlier Harga Katalog
+                </span>
+</td>
+<td class="py-space-md px-space-md text-center">
+<span class="inline-flex items-center px-space-sm py-0.5 rounded-full bg-surface-container-high text-secondary font-data-mono text-label-sm font-bold">
+                  58%
+                </span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<button class="btn-inspect px-space-md py-1.5 rounded-xl bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface font-label-md text-label-md font-semibold transition-colors inline-flex items-center gap-1" type="button">
+<span class="">Periksa</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Row 6: Incomplete Metadata (Medium Risk) -->
+<tr class="transaction-row hover:bg-surface-container-low cursor-pointer transition-colors" data-anomaly="Stempel Basah Tidak Terdeteksi OCR" data-applicant="Hendra Gunawan" data-date="22 Okt 2024, 10:04" data-dept="Operasional Lapangan" data-hash="SHA256: 09da...cc5b" data-id="TX-88112" data-nominal="Rp 8.500.000" data-risk="46%" data-risk-type="medium" data-vendor="Bengkel Mitra Mandiri">
+<td class="py-space-md px-space-lg font-data-mono text-primary font-semibold">
+                TX-88112
+              </td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Hendra Gunawan</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Operasional Lapangan</span>
+</div>
+</td>
+<td class="py-space-md px-space-md text-on-surface-variant font-data-mono text-body-sm whitespace-nowrap">
+                22 Okt 2024
+              </td>
+<td class="py-space-md px-space-md font-data-mono text-on-surface font-semibold text-right whitespace-nowrap">
+                Rp 8.500.000
+              </td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-space-xs text-on-secondary-container font-semibold font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  Validasi Stempel
+                </span>
+</td>
+<td class="py-space-md px-space-md text-center">
+<span class="inline-flex items-center px-space-sm py-0.5 rounded-full bg-surface-container-high text-secondary font-data-mono text-label-sm font-bold">
+                  46%
+                </span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<button class="btn-inspect px-space-md py-1.5 rounded-xl bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface font-label-md text-label-md font-semibold transition-colors inline-flex items-center gap-1" type="button">
+<span class="">Periksa</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer / Pagination -->
+<div class="px-space-lg py-space-md bg-surface-container-low flex flex-col sm:flex-row items-center justify-between gap-space-sm font-body-sm text-body-sm text-on-surface-variant">
+<span class="">Menampilkan 6 dari 6 antrean yang memerlukan verifikasi manual</span>
+<div class="flex items-center gap-space-xs">
+<button class="px-3 py-1 rounded-lg bg-surface-container-lowest text-on-surface font-label-md text-label-md disabled:opacity-50" disabled="">Sebelumnya</button>
+<button class="px-3 py-1 rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md font-semibold">1</button>
+<button class="px-3 py-1 rounded-lg bg-surface-container-lowest text-on-surface font-label-md text-label-md disabled:opacity-50" disabled="">Selanjutnya</button>
+</div>
+</div>
+</div>
+<!-- Quick Preview Mini Card (4 Cols on XL) - Elegant & Non-intrusive -->
+<div class="xl:col-span-4 bg-surface-container-lowest rounded-xl shadow-sm p-space-lg sticky top-20 flex flex-col gap-space-md">
+<!-- Preview Header -->
+<div class="flex items-start justify-between">
+<div class="flex flex-col gap-0.5">
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase font-semibold">Pratinjau Cepat</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold" id="preview-id">TX-88219</span>
+</div>
+<span class="px-space-sm py-0.5 rounded-full bg-error-container text-on-error-container font-data-mono text-label-sm font-bold" id="preview-risk-badge">
+          Risiko 92%
+        </span>
+</div>
+<!-- Quick Anomaly Pill Box -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs text-error font-semibold font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px]">gavel</span>
+<span id="preview-anomaly-title" class="">Indikasi Split Bill Terdeteksi</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed" id="preview-anomaly-desc">
+          Sistem mendeteksi 3 pengajuan pengeluaran terpisah di bawah pagu otorisasi Rp 50.000.000 dalam kurun waktu 48 jam ke vendor yang sama.
+        </p>
+</div>
+<!-- Metadata Key-Value List -->
+<div class="flex flex-col gap-space-sm py-space-xs font-body-sm text-body-sm">
+<div class="flex items-center justify-between py-1">
+<span class="text-on-surface-variant">Vendor Penerima</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate max-w-[190px]" id="preview-vendor">PT Cahaya Mandiri Sukses</span>
+</div>
+<div class="flex items-center justify-between py-1">
+<span class="text-on-surface-variant">Pemohon</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold" id="preview-applicant">Rian Pratama</span>
+</div>
+<div class="flex items-center justify-between py-1">
+<span class="text-on-surface-variant">Divisi</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold" id="preview-dept">Pengadaan Logistik</span>
+</div>
+<div class="flex items-center justify-between py-1">
+<span class="text-on-surface-variant">Tanggal Dokumen</span>
+<span class="font-data-mono text-on-surface" id="preview-date">24 Okt 2024, 14:22</span>
+</div>
+<div class="flex items-center justify-between py-1">
+<span class="text-on-surface-variant">Nominal Pengajuan</span>
+<span class="font-data-mono text-on-surface font-bold text-headline-sm" id="preview-nominal">Rp 48.950.000</span>
+</div>
+</div>
+<!-- Receipt Thumbnail Micro Preview -->
+<div class="rounded-xl overflow-hidden bg-surface-container relative group">
+<div class="bg-cover bg-center w-full h-32 opacity-90 group-hover:opacity-100 transition-opacity" data-alt="Macro close-up forensic scan of an official Indonesian procurement receipt invoice with clear red digital OCR bounding boxes highlights, crisp corporate financial typography, clean contrast, neutral studio light" style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuAiUZBnO-PZXAjb9omXqZsI7-8DB3RdUGBegoQY-lBIqZONlnhuHZHfAPOI1waDpajHZVvcLNpu8ES3nWSsdNzoJ4UKbmKrp9k3J7A7nD3xy97KkBYo5SdE9pM08_3VMvZsFvCMQU0HfZVqjkMh1ahVsgyicJnB-1MNRLMRzjM6ibD2N2ggi4FEzRDUmet_nehqlKT8pl5tnrw5uqmaEpF2YEi1LYAI-AfBkam9Axbo0j3qt7TfsTa8AA&quot;);"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-space-sm">
+<span class="font-label-sm text-label-sm text-on-error flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">document_scanner</span>
+            OCR Key-Value Extracted
+          </span>
+</div>
+</div>
+<!-- Fast Action Cluster -->
+<div class="flex flex-col gap-space-sm pt-space-xs">
+<button class="w-full h-10 rounded-xl bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md font-semibold flex items-center justify-center gap-space-xs shadow-sm transition-colors" id="btn-open-detail" type="button">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+<span class="">Buka Pemeriksaan Forensik Penuh</span>
+</button>
+<div class="grid grid-cols-2 gap-space-sm">
+<button class="h-9 rounded-xl bg-error-container text-on-error-container hover:bg-error hover:text-on-error font-label-md text-label-md font-semibold flex items-center justify-center gap-1 transition-colors" onclick="quickAction('flag')" type="button">
+<span class="material-symbols-outlined text-[16px]">flag</span>
+<span class="">Tandai Anomali</span>
+</button>
+<button class="h-9 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md font-semibold flex items-center justify-center gap-1 transition-colors" onclick="quickAction('approve')" type="button">
+<span class="material-symbols-outlined text-[16px]">check</span>
+<span class="">Verifikasi Sah</span>
+</button>
+</div>
+</div>
+<!-- Cryptographic Stamp Verification -->
+<div class="flex items-center justify-between pt-space-xs font-label-sm text-label-sm text-on-surface-variant">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">lock</span>
+          Keaslian Hash
+        </span>
+<span class="font-data-mono" id="preview-hash">SHA256: d8f3...a91c</span>
+</div>
+</div>
+</div>
+<!-- Focused Modal for Inspection Details (Clean, On-Demand, Non-Overwhelming) -->
+<div class="fixed inset-0 z-50 bg-on-surface/40 backdrop-blur-sm hidden items-center justify-center p-space-md" id="inspect-modal">
+<div class="bg-surface-container-lowest w-full max-w-2xl rounded-xl shadow-xl overflow-hidden flex flex-col">
+<!-- Modal Header -->
+<div class="px-space-lg py-space-md bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold" id="modal-title">Inspeksi Berkas TX-88219</span>
+<span class="px-space-sm py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-bold" id="modal-risk-tag">92% Risiko</span>
+</div>
+<button class="w-8 h-8 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container flex items-center justify-center transition-colors" id="modal-close" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Modal Body -->
+<div class="p-space-lg flex flex-col gap-space-md">
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Hasil Analisis Algoritma</span>
+<span class="font-headline-sm text-headline-sm text-error font-bold" id="modal-anomaly-heading">Pola Pemecahan Transaksi (Split Bill)</span>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed" id="modal-anomaly-explanation">
+            Ditemukan 3 faktur dengan penerima dan nomor rekening serupa yang diproses dalam interval 48 jam berturut-turut. Total akumulasi pengeluaran bernilai Rp 144.850.000, melampaui limit wewenang pengadaan mandiri (Rp 50.000.000).
+          </p>
+</div>
+<div class="grid grid-cols-2 gap-space-md">
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Vendor &amp; NPWP</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold" id="modal-vendor">PT Cahaya Mandiri Sukses</span>
+<span class="font-data-mono text-body-sm text-on-surface-variant">01.345.678.9-012.000 (Aktif)</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Nominal &amp; Tanggal</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold" id="modal-nominal">Rp 48.950.000</span>
+<span class="font-data-mono text-body-sm text-on-surface-variant" id="modal-date">24 Okt 2024, 14:22</span>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-sm text-label-sm text-on-surface font-semibold">Catatan Evaluasi Auditor</label>
+<textarea class="w-full p-space-sm bg-surface-container-low rounded-xl font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="Tuliskan justifikasi kepatuhan atau instruksi penahanan berkas untuk divisi terkait..." rows="3"></textarea>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="px-space-lg py-space-md bg-surface-container-low flex items-center justify-between">
+<button class="px-space-md py-space-sm rounded-xl bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-md text-label-md transition-colors" id="modal-cancel-btn" type="button">
+          Tutup
+        </button>
+<div class="flex items-center gap-space-sm">
+<button class="px-space-md py-space-sm rounded-xl bg-error text-on-error font-label-md text-label-md font-semibold hover:opacity-90 transition-opacity" onclick="confirmAction('Hold / Fraud Flag')" type="button">
+            Tahan &amp; Laporkan Fraud
+          </button>
+<button class="px-space-md py-space-sm rounded-xl bg-primary text-on-primary font-label-md text-label-md font-semibold hover:bg-primary-container transition-colors" onclick="confirmAction('Verified')" type="button">
+            Loloskan Transaksi
+          </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Toast Simulation -->
+<div class="fixed bottom-space-lg right-space-lg z-50 bg-inverse-surface text-inverse-on-surface px-space-lg py-space-md rounded-xl shadow-lg font-body-md text-body-md flex items-center gap-space-sm transition-all duration-300 opacity-0 pointer-events-none translate-y-4" id="toast-msg">
+<span class="material-symbols-outlined text-[20px] text-primary-fixed-dim" id="toast-icon">check_circle</span>
+<span id="toast-text" class="">Tindakan berhasil disimpan.</span>
+</div>
+</div>
+<script>
+  // Simple reactive row selection and drawer preview sync
+  const rows = document.querySelectorAll('.transaction-row');
+  const previewId = document.getElementById('preview-id');
+  const previewRiskBadge = document.getElementById('preview-risk-badge');
+  const previewAnomalyTitle = document.getElementById('preview-anomaly-title');
+  const previewAnomalyDesc = document.getElementById('preview-anomaly-desc');
+  const previewVendor = document.getElementById('preview-vendor');
+  const previewApplicant = document.getElementById('preview-applicant');
+  const previewDept = document.getElementById('preview-dept');
+  const previewDate = document.getElementById('preview-date');
+  const previewNominal = document.getElementById('preview-nominal');
+  const previewHash = document.getElementById('preview-hash');
+
+  const modal = document.getElementById('inspect-modal');
+  const modalClose = document.getElementById('modal-close');
+  const modalCancelBtn = document.getElementById('modal-cancel-btn');
+  const btnOpenDetail = document.getElementById('btn-open-detail');
+
+  let currentActiveData = {
+    id: 'TX-88219',
+    vendor: 'PT Cahaya Mandiri Sukses',
+    applicant: 'Rian Pratama',
+    dept: 'Pengadaan & Logistik',
+    date: '24 Okt 2024, 14:22',
+    nominal: 'Rp 48.950.000',
+    anomaly: 'Indikasi Split Bill (3x Pengajuan < Rp 50jt)',
+    risk: '92%',
+    riskType: 'high',
+    hash: 'SHA256: d8f3...a91c'
+  };
+
+  function updatePreviewCard(data) {
+    currentActiveData = data;
+    previewId.textContent = data.id;
+    previewVendor.textContent = data.vendor;
+    previewApplicant.textContent = data.applicant;
+    previewDept.textContent = data.dept;
+    previewDate.textContent = data.date;
+    previewNominal.textContent = data.nominal;
+    previewAnomalyTitle.textContent = data.anomaly;
+    previewHash.textContent = data.hash;
+    previewRiskBadge.textContent = 'Risiko ' + data.risk;
+
+    if (data.riskType === 'high') {
+      previewRiskBadge.className = 'px-space-sm py-0.5 rounded-full bg-error-container text-on-error-container font-data-mono text-label-sm font-bold';
+    } else {
+      previewRiskBadge.className = 'px-space-sm py-0.5 rounded-full bg-surface-container-high text-secondary font-data-mono text-label-sm font-bold';
+    }
+  }
+
+  rows.forEach(row => {
+    row.addEventListener('click', (e) => {
+      // Clear visual active highlight
+      rows.forEach(r => {
+        r.classList.remove('bg-error-container/25', 'bg-surface-container-high/40');
+      });
+
+      // Highlight clicked row
+      const isHigh = row.dataset.riskType === 'high';
+      row.classList.add(isHigh ? 'bg-error-container/25' : 'bg-surface-container-high/40');
+
+      const data = {
+        id: row.dataset.id,
+        vendor: row.dataset.vendor,
+        applicant: row.dataset.applicant,
+        dept: row.dataset.dept,
+        date: row.dataset.date,
+        nominal: row.dataset.nominal,
+        anomaly: row.dataset.anomaly,
+        risk: row.dataset.risk,
+        riskType: row.dataset.riskType,
+        hash: row.dataset.hash
+      };
+
+      updatePreviewCard(data);
+
+      // If clicked specifically on the inspect button, also open modal
+      if (e.target.closest('.btn-inspect')) {
+        openModalWithData(data);
+      }
+    });
+  });
+
+  function openModalWithData(data) {
+    document.getElementById('modal-title').textContent = 'Inspeksi Berkas ' + data.id;
+    document.getElementById('modal-risk-tag').textContent = data.risk + ' Skor Risiko';
+    document.getElementById('modal-anomaly-heading').textContent = data.anomaly;
+    document.getElementById('modal-vendor').textContent = data.vendor;
+    document.getElementById('modal-nominal').textContent = data.nominal;
+    document.getElementById('modal-date').textContent = data.date;
+    
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  btnOpenDetail.addEventListener('click', () => {
+    openModalWithData(currentActiveData);
+  });
+
+  function closeModal() {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  modalClose.addEventListener('click', closeModal);
+  modalCancelBtn.addEventListener('click', closeModal);
+
+  // Close modal when clicking on backdrop
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // Toast feedback micro-interaction
+  function showToast(message, icon = 'check_circle') {
+    const toast = document.getElementById('toast-msg');
+    const toastText = document.getElementById('toast-text');
+    const toastIcon = document.getElementById('toast-icon');
+
+    toastText.textContent = message;
+    toastIcon.textContent = icon;
+
+    toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+    toast.classList.add('opacity-100', 'translate-y-0');
+
+    setTimeout(() => {
+      toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+      toast.classList.remove('opacity-100', 'translate-y-0');
+    }, 3200);
+  }
+
+  window.quickAction = function(type) {
+    if (type === 'flag') {
+      showToast(currentActiveData.id + ' berhasil ditandai sebagai indikasi fraud.', 'flag');
+    } else {
+      showToast(currentActiveData.id + ' telah diverifikasi dan disetujui.', 'check_circle');
+    }
+  };
+
+  window.confirmAction = function(status) {
+    closeModal();
+    showToast(currentActiveData.id + ': Status diperbarui menjadi ' + status, 'verified');
+  };
+
+  // Simple instant search filter simulation
+  const searchInput = document.getElementById('search-input');
+  searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase();
+    rows.forEach(row => {
+      const text = (row.dataset.id + ' ' + row.dataset.vendor + ' ' + row.dataset.applicant + ' ' + row.dataset.anomaly).toLowerCase();
+      if (text.includes(query)) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  });
+</script></main></div>
+
+</body></html>

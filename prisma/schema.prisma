@@ -1,0 +1,124 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Catatan: Jika ingin menggunakan PostgreSQL, ubah provider ke "postgresql"
+// dan set DATABASE_URL="postgresql://user:pass@localhost:5432/smartaudit?schema=public"
+
+model User {
+  id        String   @id @default(uuid())
+  nip       String   @unique
+  name      String
+  email     String   @unique
+  role      String   // "STAFF" atau "AUDITOR"
+  department String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  transactions Transaction[]
+  auditLogs    AuditLog[]
+
+  @@map("users")
+}
+
+model Transaction {
+  id             String   @id @default(uuid())
+  code           String   @unique // Contoh: TX-88219
+  applicantName  String   @map("applicant_name")
+  department     String   // "Pengadaan & Logistik", "TI & Infrastruktur", dll.
+  category       String   // "hardware", "konsumsi", "transportasi", "entertainment", "atk"
+  vendor         String
+  date           DateTime // Tanggal faktur/kuitansi
+  amount         Float
+  description    String?
+  status         String   @default("PENDING_REVIEW") 
+  // Status: "PENDING_REVIEW", "AUTO_APPROVED", "APPROVED", "REJECTED", "NEED_CLARIFICATION"
+  submissionDate DateTime @default(now()) @map("submission_date")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  userId String? @map("user_id")
+  user   User?   @relation(fields: [userId], references: [id])
+
+  receipt       Receipt?
+  fraudAnalysis FraudAnalysis?
+  auditLogs     AuditLog[]
+  webhookLogs   WebhookLog[]
+
+  @@map("transactions")
+}
+
+model Receipt {
+  id               String   @id @default(uuid())
+  transactionId    String   @unique @map("transaction_id")
+  transaction      Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  imageUrl         String   @map("image_url")
+  ocrRawText       String?  @map("ocr_raw_text")
+  extractedVendor  String?  @map("extracted_vendor")
+  extractedDate    String?  @map("extracted_date")
+  extractedAmount  Float?   @map("extracted_amount")
+  phashFingerprint String?  @map("phash_fingerprint")
+  sha256Hash       String?  @map("sha256_hash")
+  mimeType         String?  @map("mime_type")
+  fileSizeKb       Float?   @map("file_size_kb")
+  ocrConfidence    Float?   @default(0.95) @map("ocr_confidence")
+  ocrLatencyMs     Int?     @default(1200) @map("ocr_latency_ms")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@map("receipts")
+}
+
+model FraudAnalysis {
+  id              String      @id @default(uuid())
+  transactionId   String      @unique @map("transaction_id")
+  transaction     Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  riskScore       Int         @map("risk_score") // 0 - 100
+  riskLevel       String      @map("risk_level") // "LOW", "MEDIUM", "HIGH", "CRITICAL"
+  reasonXai       String      @map("reason_xai") // Narasi penjelasan audit forensik
+  pointsBreakdown String?     @map("points_breakdown") // JSON rincian +40, +35, dll.
+  isDuplicate     Boolean     @default(false) @map("is_duplicate")
+  duplicateTarget String?     @map("duplicate_target") // Ref kode transaksi yang mirip
+  duplicateSim    Float?      @map("duplicate_sim") // Misal 0.948 (94.8%)
+  isSplitBill     Boolean     @default(false) @map("is_split_bill")
+  isAnomalyAmount Boolean     @default(false) @map("is_anomaly_amount")
+  isHighRiskCat   Boolean     @default(false) @map("is_high_risk_cat")
+  isOffHours      Boolean     @default(false) @map("is_off_hours")
+  isRoundAmount   Boolean     @default(false) @map("is_round_amount")
+  createdAt       DateTime    @default(now()) @map("created_at")
+
+  @@map("fraud_analyses")
+}
+
+model AuditLog {
+  id            String      @id @default(uuid())
+  transactionId String      @map("transaction_id")
+  transaction   Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  userId        String?     @map("user_id")
+  user          User?       @relation(fields: [userId], references: [id])
+  auditorName   String      @map("auditor_name")
+  action        String      // "AUTO_APPROVED", "APPROVED", "REJECTED", "CLARIFICATION"
+  notes         String?     // Catatan Berita Acara Pemeriksaan (BAP)
+  tamperHash    String?     @map("tamper_hash") // SHA256 immutable signature
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  @@map("audit_logs")
+}
+
+model WebhookLog {
+  id            String      @id @default(uuid())
+  transactionId String      @map("transaction_id")
+  transaction   Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  targetUrl     String      @map("target_url")
+  payload       String      // JSON string
+  statusCode    Int         @default(200) @map("status_code")
+  responseBody  String?     @map("response_body")
+  status        String      @default("SUCCESS") // "SUCCESS", "FAILED"
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  @@map("webhook_logs")
+}
