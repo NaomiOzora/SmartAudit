@@ -8,13 +8,13 @@ export interface OcrExtractionResult {
   items?: Array<{ name: string; price: number }>;
   confidence: number;
   latencyMs: number;
-  engineUsed: "GEMINI_1_5_FLASH" | "SMARTAUDIT_FALLBACK_ENGINE";
+  engineUsed: "GEMINI_FLASH_API" | "SMARTAUDIT_FALLBACK_ENGINE";
   fallbackTriggered: boolean;
   notes?: string;
 }
 
 /**
- * Ekstraksi OCR kuitansi menggunakan AI Vision (Google Gemini 1.5 Flash Free Tier)
+ * Ekstraksi OCR kuitansi menggunakan AI Vision (Google Gemini Flash)
  * dengan Fallback Otomatis jika latensi > 5 detik atau tanpa API Key.
  */
 export async function extractReceiptWithAi(
@@ -25,11 +25,12 @@ export async function extractReceiptWithAi(
   const startTime = Date.now();
   const apiKey = process.env.GEMINI_API_KEY?.trim();
 
-  // Jika API Key tersedia, coba panggil Google Gemini 1.5 Flash
+  // Jika API Key tersedia, coba panggil Google Gemini Flash Vision
   if (apiKey) {
     try {
       const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      // Gunakan model Flash aktif terkini (gemini-3.8-flash)
+      const model = genAI.getGenerativeModel({ model: "gemini-3.8-flash" });
 
       const base64Data = imageBuffer.toString("base64");
       const prompt = `Anda adalah sistem OCR Audit Forensik Keuangan Indonesia.
@@ -72,7 +73,7 @@ Analisis gambar struk/nota/faktur kuitansi ini dan ekstrak data penting dalam fo
         rawText: parsed.rawText || text,
         confidence: Number(parsed.confidence) || 0.95,
         latencyMs,
-        engineUsed: "GEMINI_1_5_FLASH",
+        engineUsed: "GEMINI_FLASH_API",
         fallbackTriggered: false,
       };
     } catch (err: unknown) {
