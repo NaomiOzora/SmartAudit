@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     // 2. Hitung Perceptual Hash (dHash) untuk Deteksi Duplikasi Grafis
     const phashFingerprint = await computePerceptualHash(buffer);
 
-    // 3. Jalankan Ekstraksi AI Vision OCR (Google Gemini 1.5 Flash / Fallback Engine SLA <= 5s)
+    // 3. Jalankan Ekstraksi AI Vision OCR (Google Gemini Flash / Fallback Engine)
     const ocrResult = await extractReceiptWithAi(
       buffer,
       file.type || "image/jpeg",
@@ -42,14 +42,28 @@ export async function POST(req: NextRequest) {
         sha256Hash,
         phashFingerprint,
         previewUrl: previewBase64,
+        documentType: ocrResult.documentType,
         vendor: ocrResult.vendor,
+        taxId: ocrResult.taxId,
+        invoiceNumber: ocrResult.invoiceNumber,
         date: ocrResult.date,
+        dueDate: ocrResult.dueDate,
+        items: ocrResult.items,
+        subtotal: ocrResult.subtotal,
+        discount: ocrResult.discount,
+        taxPpn: ocrResult.taxPpn,
+        taxPph: ocrResult.taxPph,
+        otherFees: ocrResult.otherFees,
         amount: ocrResult.amount,
+        currency: ocrResult.currency,
+        arithmeticValidation: ocrResult.arithmeticValidation,
+        physicalIntegrity: ocrResult.physicalIntegrity,
         rawText: ocrResult.rawText,
         confidence: ocrResult.confidence,
         latencyMs: ocrResult.latencyMs,
         engineUsed: ocrResult.engineUsed,
         fallbackTriggered: ocrResult.fallbackTriggered,
+        notes: ocrResult.notes,
       },
     });
   } catch (error: unknown) {

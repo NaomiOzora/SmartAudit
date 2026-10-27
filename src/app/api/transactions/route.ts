@@ -100,7 +100,7 @@ export async function POST(req: NextRequest) {
       // Generate random kode transaksi berurutan jika tidak ada (format TX-XXXXX)
       const code = item.code || `TX-${Math.floor(10000 + Math.random() * 90000)}`;
 
-      // 1. Evaluasi Fraud Engine (Rule-based + pHash + XAI)
+      // 1. Evaluasi Fraud Engine (Rule-based + pHash + XAI + Verifikasi Faktur & Pajak)
       const evaluation = await evaluateTransactionFraud({
         vendor,
         date: new Date(date || new Date()),
@@ -109,6 +109,10 @@ export async function POST(req: NextRequest) {
         department,
         phashFingerprint: receipt?.phashFingerprint,
         description,
+        extractedAmount: receipt?.extractedAmount !== undefined ? Number(receipt.extractedAmount) : undefined,
+        invoiceArithmeticValid: receipt?.invoiceArithmeticValid,
+        invoiceArithmeticDiff: receipt?.invoiceArithmeticDiff ? Number(receipt.invoiceArithmeticDiff) : undefined,
+        tamperDetected: receipt?.tamperDetected,
       });
 
       // Status awal berdasarkan ambang batas PRD (< 40 = AUTO_APPROVED, >= 40 = PENDING_REVIEW)

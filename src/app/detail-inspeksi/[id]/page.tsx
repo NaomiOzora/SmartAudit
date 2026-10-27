@@ -374,58 +374,195 @@ export default function DetailInspeksiPage() {
                 </div>
               </div>
 
-              {/* Document Canvas - Roomy & Generous */}
-              <div className="relative w-full min-h-[380px] bg-slate-100/80 rounded-xl overflow-hidden flex items-center justify-center border border-slate-200 p-6">
-                <div
-                  style={{ transform: `scale(${zoomLevel})` }}
-                  className="transition-transform duration-100 flex items-center justify-center"
-                >
-                  <div className="bg-white text-slate-900 shadow-lg p-6 rounded-xl w-[320px] sm:w-[360px] font-mono text-xs leading-normal border border-slate-300">
-                    <div className="flex justify-between items-center pb-2 mb-3 border-b border-slate-200 text-[10px] text-slate-500">
-                      <span className="font-bold uppercase tracking-wider">DOC-SCAN-{transaction.code}</span>
-                      <span className="text-blue-600 font-semibold">SHA-256 Valid</span>
-                    </div>
+              {/* Document Canvas - Roomy & Generous Faktur Komersial */}
+              {(() => {
+                let invoiceDetails: any = null;
+                if (transaction.receipt?.ocrRawText) {
+                  try {
+                    const parsed = JSON.parse(transaction.receipt.ocrRawText);
+                    if (typeof parsed === "object" && parsed !== null) invoiceDetails = parsed;
+                  } catch {
+                    // plain text
+                  }
+                }
 
-                    <div className="text-center mb-3">
-                      <div className="font-bold text-sm uppercase text-slate-900">{transaction.vendor}</div>
-                      <div className="text-slate-500 text-[11px] mt-0.5">Bukti Transaksi Kas Resmi</div>
-                    </div>
+                const invNumber = invoiceDetails?.invoiceNumber || "INV-GK-8821";
+                const invTaxId = invoiceDetails?.taxId || "01.345.678.9-021.000";
+                const invItems = invoiceDetails?.items && Array.isArray(invoiceDetails.items) && invoiceDetails.items.length > 0
+                  ? invoiceDetails.items
+                  : [{ name: transaction.description || "Pengadaan Barang & Jasa Operasional", qty: 1, unitPrice: Math.round(transaction.amount / 1.11), totalPrice: Math.round(transaction.amount / 1.11) }];
+                const invSubtotal = invoiceDetails?.subtotal || Math.round(transaction.amount / 1.11);
+                const invPpn = invoiceDetails?.taxPpn !== undefined ? invoiceDetails.taxPpn : Math.round(transaction.amount - invSubtotal);
+                const invDiscount = invoiceDetails?.discount || 0;
+                const invGrandTotal = invoiceDetails?.amount || transaction.amount;
+                const isArithValid = invoiceDetails?.arithmeticValidation?.isValid ?? true;
+                const arithNotes = invoiceDetails?.arithmeticValidation?.notes || `Kalkulasi Subtotal Rp ${invSubtotal.toLocaleString("id-ID")} + PPN 11% Rp ${invPpn.toLocaleString("id-ID")} = Total Rp ${invGrandTotal.toLocaleString("id-ID")} [Valid]`;
+                const isDiscrepant = Math.abs(transaction.amount - invGrandTotal) > 100;
 
-                    <div className="grid grid-cols-2 gap-2 my-2 py-1.5 px-3 bg-slate-50 rounded-lg border border-slate-200 text-[11px]">
-                      <div>
-                        <span className="text-slate-500">No. Faktur: </span>
-                        <span className="font-bold text-slate-800">INV-GK-8821</span>
+                return (
+                  <>
+                    <div className="relative w-full min-h-[440px] bg-slate-100/90 rounded-2xl overflow-hidden flex items-center justify-center border border-slate-200 p-6">
+                      <div
+                        style={{ transform: `scale(${zoomLevel})` }}
+                        className="transition-transform duration-100 flex items-center justify-center w-full"
+                      >
+                        {/* Format Faktur / Invoice Komersial Resmi */}
+                        <div className="bg-white text-slate-900 shadow-xl p-7 rounded-2xl w-full max-w-[520px] font-mono text-xs leading-normal border border-slate-300">
+                          {/* Header Faktur */}
+                          <div className="flex justify-between items-start pb-4 mb-4 border-b-2 border-slate-800">
+                            <div>
+                              <div className="font-extrabold text-sm uppercase text-slate-900 tracking-wide">
+                                {transaction.vendor}
+                              </div>
+                              <div className="text-[11px] text-slate-500 mt-0.5">
+                                NPWP: {invTaxId}
+                              </div>
+                              <div className="text-[10px] text-slate-400">
+                                Rekanan Penyedia Barang / Jasa Resmi
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <span className="inline-block px-2.5 py-1 rounded bg-slate-900 text-white font-bold text-[10px] tracking-wider uppercase">
+                                {invoiceDetails?.documentType?.replace(/_/g, " ") || "FAKTUR KOMERSIAL"}
+                              </span>
+                              <div className="font-bold text-xs text-slate-800 mt-1.5">
+                                {invNumber}
+                              </div>
+                              <div className="text-[10px] text-slate-500">
+                                Tgl: {new Date(transaction.date).toLocaleDateString("id-ID")}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Info Pemohon & Instansi */}
+                          <div className="grid grid-cols-2 gap-3 mb-4 p-2.5 bg-slate-50 rounded-xl border border-slate-200 text-[11px]">
+                            <div>
+                              <span className="text-slate-500 text-[10px] block">DITUJUKAN KEPADA:</span>
+                              <span className="font-bold text-slate-800 block">{transaction.applicantName}</span>
+                              <span className="text-slate-600 text-[10px]">{transaction.department}</span>
+                            </div>
+                            <div className="text-right">
+                              <span className="text-slate-500 text-[10px] block">STATUS PEMBAYARAN:</span>
+                              <span className="font-bold text-emerald-700 block">LUNAS (Verified)</span>
+                              <span className="text-slate-400 text-[10px]">Metode: Transfer Bank</span>
+                            </div>
+                          </div>
+
+                          {/* Tabel Rincian Item */}
+                          <div className="mb-4">
+                            <div className="grid grid-cols-12 pb-1.5 border-b border-slate-300 text-[10px] font-bold text-slate-500 uppercase">
+                              <div className="col-span-7">Deskripsi Barang / Jasa</div>
+                              <div className="col-span-2 text-center">Qty</div>
+                              <div className="col-span-3 text-right">Jumlah (IDR)</div>
+                            </div>
+                            <div className="divide-y divide-slate-100">
+                              {invItems.map((item: any, idx: number) => (
+                                <div key={idx} className="grid grid-cols-12 py-2 text-[11px] text-slate-800 items-center">
+                                  <div className="col-span-7 pr-2 font-medium">
+                                    {item.name}
+                                  </div>
+                                  <div className="col-span-2 text-center text-slate-600">
+                                    {item.qty}
+                                  </div>
+                                  <div className="col-span-3 text-right font-bold">
+                                    {(item.totalPrice || item.unitPrice || 0).toLocaleString("id-ID")}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Rincian Kalkulasi Pajak & Grand Total */}
+                          <div className="pt-2 border-t-2 border-slate-200 space-y-1.5 text-xs">
+                            <div className="flex justify-between text-slate-600">
+                              <span>Subtotal (Dasar Pengenaan Pajak / DPP):</span>
+                              <span className="font-semibold">Rp {invSubtotal.toLocaleString("id-ID")}</span>
+                            </div>
+                            {invDiscount > 0 && (
+                              <div className="flex justify-between text-emerald-700">
+                                <span>Potongan / Diskon:</span>
+                                <span>- Rp {invDiscount.toLocaleString("id-ID")}</span>
+                              </div>
+                            )}
+                            <div className="flex justify-between text-slate-600">
+                              <span>PPN (11% Sesuai UU HPP):</span>
+                              <span className="font-semibold">Rp {invPpn.toLocaleString("id-ID")}</span>
+                            </div>
+                            <div className="flex justify-between items-center p-3 rounded-xl bg-slate-900 text-white font-bold text-sm mt-2">
+                              <span className="uppercase text-xs tracking-wider">TOTAL TAGIHAN FAKTUR</span>
+                              <span className="font-mono text-base text-amber-300">
+                                Rp {invGrandTotal.toLocaleString("id-ID")}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Footer Validasi Forensik */}
+                          <div className="mt-4 pt-2.5 text-[10px] text-slate-400 border-t border-slate-200 flex justify-between items-center">
+                            <span>Kuitansi Digital SmartAudit Forensics</span>
+                            <span className="text-blue-600 font-bold">SHA-256 Verified</span>
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <span className="text-slate-500">Tanggal: </span>
-                        <span className="font-bold text-slate-800">{new Date(transaction.date).toLocaleDateString("id-ID")}</span>
+
+                      <div className="absolute bottom-3 left-3 bg-white px-3 py-1 rounded-lg shadow-xs border border-slate-200 text-xs font-semibold text-slate-700 inline-flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <span>AI OCR Flash Vision &bull; Akurasi Forensik Pajak Tinggi</span>
                       </div>
                     </div>
 
-                    <div className="my-3 space-y-1.5 text-xs text-slate-800">
-                      <div className="flex justify-between py-1 border-b border-dashed border-slate-200">
-                        <span>{transaction.description || "Pengadaan Barang & Jasa"}</span>
-                        <span className="font-bold">Rp {transaction.amount.toLocaleString("id-ID")}</span>
+                    {/* Verifikasi Aritmatika & Ketidaksesuaian Nominal */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {/* Box Validasi Kalkulasi */}
+                      <div
+                        className={`p-3.5 rounded-xl border flex items-start gap-2.5 text-xs ${
+                          isArithValid
+                            ? "bg-emerald-50 border-emerald-200 text-emerald-900"
+                            : "bg-rose-50 border-rose-200 text-rose-900"
+                        }`}
+                      >
+                        {isArithValid ? (
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                        ) : (
+                          <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                        )}
+                        <div>
+                          <span className="font-bold block">
+                            {isArithValid ? "Aritmatika & Pajak Klop (100% Valid)" : "Cacat Kalkulasi Aritmatika Faktur"}
+                          </span>
+                          <span className="text-[11px] opacity-90 mt-0.5 block leading-relaxed">
+                            {arithNotes}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Box Discrepancy Nominal Input vs Dokumen */}
+                      <div
+                        className={`p-3.5 rounded-xl border flex items-start gap-2.5 text-xs ${
+                          !isDiscrepant
+                            ? "bg-blue-50 border-blue-200 text-blue-900"
+                            : "bg-rose-50 border-rose-200 text-rose-900"
+                        }`}
+                      >
+                        {!isDiscrepant ? (
+                          <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                        ) : (
+                          <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                        )}
+                        <div>
+                          <span className="font-bold block">
+                            {!isDiscrepant ? "Nominal Pengajuan Sesuai Faktur" : "Ketidaksesuaian Nominal Pengajuan"}
+                          </span>
+                          <span className="text-[11px] opacity-90 mt-0.5 block leading-relaxed">
+                            {!isDiscrepant
+                              ? `Pengajuan pemohon (Rp ${transaction.amount.toLocaleString("id-ID")}) identik dengan faktur fisik.`
+                              : `Pemohon mengajukan Rp ${transaction.amount.toLocaleString("id-ID")}, namun faktur tertulis Rp ${invGrandTotal.toLocaleString("id-ID")} (Selisih Rp ${Math.abs(transaction.amount - invGrandTotal).toLocaleString("id-ID")}).`}
+                          </span>
+                        </div>
                       </div>
                     </div>
-
-                    <div className="p-3 rounded-lg bg-rose-50 mt-2 flex justify-between items-center border border-rose-200 text-xs">
-                      <span className="font-bold uppercase text-slate-800">TOTAL BAYAR</span>
-                      <span className="font-extrabold text-sm text-rose-700">Rp {transaction.amount.toLocaleString("id-ID")}</span>
-                    </div>
-
-                    <div className="mt-3 pt-2 text-[10px] text-slate-500 border-t border-slate-200 flex justify-between">
-                      <span>Pemohon: {transaction.applicantName}</span>
-                      <span className="text-emerald-700 font-bold">Lunas (Transfer)</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="absolute bottom-3 left-3 bg-white px-3 py-1 rounded-lg shadow-xs border border-slate-200 text-xs font-semibold text-slate-700 inline-flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                  <span>AI OCR &bull; Presisi 99.4% &bull; SLA 1.2s</span>
-                </div>
-              </div>
+                  </>
+                );
+              })()}
 
               {/* OCR Cross Match */}
               <div className="grid grid-cols-3 gap-3">

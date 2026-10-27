@@ -11,6 +11,11 @@ export interface TransactionInput {
   submissionTime?: Date;
   description?: string;
   excludeTransactionId?: string;
+  // Parameter Verifikasi Forensik Faktur:
+  extractedAmount?: number;
+  invoiceArithmeticValid?: boolean;
+  invoiceArithmeticDiff?: number;
+  tamperDetected?: boolean;
 }
 
 export interface FraudEvaluationResult {
@@ -144,8 +149,45 @@ export async function evaluateTransactionFraud(
     });
   }
 
-  // 3. Parameter 3: Anomali Nominal (+25 Poin)
-  // Menghitung apakah nominal melebihi batas rata-rata divisi (> 3 StdDev atau > batas kebijakan wajar per divisi)
+  // 3. Parameter 3: Anomali & Ketidaksesuaian Nominal (+25 - +35 Poin)
+  // a) Ketidaksesuaian nominal yang diinput pemohon vs nominal faktur fisik yang dibaca AI (+35 Poin)
+  if (input.extractedAmount !== undefined && input.extractedAmount > 0) {
+    const discrepancy = Math.abs(input.amount - input.extractedAmount);
+    if (discrepancy > 100) {
+      flags.isAnomalyAmount = true;
+      points.push({
+        rule: `Ketidaksesuaian Nominal Pengajuan vs Faktur Fisik (Selisih Rp ${discrepancy.toLocaleString("id-ID")})`,
+        points: 35,
+        category: "ANOMALY_AMOUNT",
+        detail: `Nominal yang diinput pemohon (Rp ${input.amount.toLocaleString("id-ID")}) berbeda dengan total faktur yang diverifikasi AI (Rp ${input.extractedAmount.toLocaleString("id-ID")}).`,
+      });
+    }
+  }
+
+  // b) Kecacatan kalkulasi aritmatika dan pajak (Subtotal + PPN != Total) (+30 Poin)
+  if (input.invoiceArithmeticValid === false) {
+    flags.isAnomalyAmount = true;
+    const diff = input.invoiceArithmeticDiff || 0;
+    points.push({
+      rule: `Kecacatan Kalkulasi Aritmatika & Pajak Faktur${diff > 0 ? ` (Selisih Hitungan Rp ${diff.toLocaleString("id-ID")})` : ""}`,
+      points: 30,
+      category: "ANOMALY_AMOUNT",
+      detail: `Terdapat ketidaksesuaian matematis pada faktur: penjumlahan Subtotal, PPN, dan potongan tidak menghasilkan Grand Total yang tertera pada dokumen.`,
+    });
+  }
+
+  // c) Indikasi manipulasi / rekayasa fisik dokumen (+40 Poin)
+  if (input.tamperDetected === true) {
+    flags.isAnomalyAmount = true;
+    points.push({
+      rule: "Indikasi Manipulasi / Cacat Tipografi Fisik Dokumen",
+      points: 40,
+      category: "ANOMALY_AMOUNT",
+      detail: "AI mendeteksi anomali tipografi, inkonsistensi font pada nominal, atau indikasi penyuntingan grafis pada bukti faktur.",
+    });
+  }
+
+  // d) Batas deviasi anggaran per divisi (> 3 Standar Deviasi)
   const divisionLimits: Record<string, number> = {
     "IT & Digital": 40000000,
     "TI & Infrastruktur": 35000000,

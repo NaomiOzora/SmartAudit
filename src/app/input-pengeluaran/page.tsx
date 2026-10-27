@@ -37,9 +37,31 @@ export default function InputPengeluaranPage() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isScanning, setIsScanning] = useState(false);
   const [ocrData, setOcrData] = useState<{
+    documentType?: string;
     vendor?: string;
+    taxId?: string | null;
+    invoiceNumber?: string | null;
     date?: string;
+    dueDate?: string | null;
+    items?: Array<{ name: string; qty: number; unitPrice: number; totalPrice: number }>;
+    subtotal?: number;
+    discount?: number;
+    taxPpn?: number;
+    taxPph?: number;
+    otherFees?: number;
     amount?: number;
+    currency?: string;
+    arithmeticValidation?: {
+      isValid: boolean;
+      expectedTotal: number;
+      actualTotal: number;
+      difference: number;
+      notes: string;
+    };
+    physicalIntegrity?: {
+      tamperDetected: boolean;
+      notes: string;
+    };
     sha256Hash?: string;
     phashFingerprint?: string;
     latencyMs?: number;
@@ -47,6 +69,7 @@ export default function InputPengeluaranPage() {
     engineUsed?: string;
     fallbackTriggered?: boolean;
     rawText?: string;
+    notes?: string;
   } | null>(null);
 
   // State Form Transaksi
@@ -54,6 +77,10 @@ export default function InputPengeluaranPage() {
   const [department, setDepartment] = useState("IT & Digital");
   const [category, setCategory] = useState("hardware");
   const [vendor, setVendor] = useState("");
+  const [invoiceNumber, setInvoiceNumber] = useState("");
+  const [taxId, setTaxId] = useState("");
+  const [subtotal, setSubtotal] = useState<number | "">("");
+  const [taxPpn, setTaxPpn] = useState<number | "">("");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [amount, setAmount] = useState<number | "">("");
   const [description, setDescription] = useState("");
@@ -142,9 +169,22 @@ export default function InputPengeluaranPage() {
         const d = json.data;
         setPreviewUrl(d.previewUrl);
         setOcrData({
+          documentType: d.documentType,
           vendor: d.vendor,
+          taxId: d.taxId,
+          invoiceNumber: d.invoiceNumber,
           date: d.date,
+          dueDate: d.dueDate,
+          items: d.items,
+          subtotal: d.subtotal,
+          discount: d.discount,
+          taxPpn: d.taxPpn,
+          taxPph: d.taxPph,
+          otherFees: d.otherFees,
           amount: d.amount,
+          currency: d.currency,
+          arithmeticValidation: d.arithmeticValidation,
+          physicalIntegrity: d.physicalIntegrity,
           sha256Hash: d.sha256Hash,
           phashFingerprint: d.phashFingerprint,
           latencyMs: d.latencyMs,
@@ -152,11 +192,16 @@ export default function InputPengeluaranPage() {
           engineUsed: d.engineUsed,
           fallbackTriggered: d.fallbackTriggered,
           rawText: d.rawText,
+          notes: d.notes,
         });
 
         if (d.vendor) setVendor(d.vendor);
         if (d.date) setDate(d.date);
-        if (d.amount) setAmount(d.amount);
+        if (d.amount !== undefined) setAmount(d.amount);
+        if (d.invoiceNumber) setInvoiceNumber(d.invoiceNumber);
+        if (d.taxId) setTaxId(d.taxId);
+        if (d.subtotal !== undefined) setSubtotal(d.subtotal);
+        if (d.taxPpn !== undefined) setTaxPpn(d.taxPpn);
       }
     } catch (err) {
       console.error("Gagal OCR:", err);
@@ -183,19 +228,36 @@ export default function InputPengeluaranPage() {
         vendor,
         amount: Number(amount),
         date,
-        description: description || "Pengeluaran operasional kedinasan",
+        description: description || `Pengeluaran faktur ${invoiceNumber ? `No. ${invoiceNumber}` : "operasional kedinasan"}`,
         receipt: ocrData
           ? {
               imageUrl: previewUrl || "/sample-receipt.jpg",
-              ocrRawText: ocrData.rawText || "",
+              ocrRawText: JSON.stringify({
+                rawText: ocrData.rawText,
+                documentType: ocrData.documentType,
+                invoiceNumber: invoiceNumber || ocrData.invoiceNumber,
+                taxId: taxId || ocrData.taxId,
+                items: ocrData.items,
+                subtotal: subtotal !== "" ? Number(subtotal) : ocrData.subtotal,
+                taxPpn: taxPpn !== "" ? Number(taxPpn) : ocrData.taxPpn,
+                discount: ocrData.discount,
+                taxPph: ocrData.taxPph,
+                otherFees: ocrData.otherFees,
+                amount: ocrData.amount,
+                arithmeticValidation: ocrData.arithmeticValidation,
+                physicalIntegrity: ocrData.physicalIntegrity,
+              }),
               extractedVendor: ocrData.vendor || vendor,
               extractedDate: ocrData.date || date,
-              extractedAmount: ocrData.amount || Number(amount),
+              extractedAmount: ocrData.amount !== undefined ? Number(ocrData.amount) : Number(amount),
               phashFingerprint: ocrData.phashFingerprint || "0000000000000000",
               sha256Hash: ocrData.sha256Hash || "sha256-dummy",
               fileSizeKb: file ? Math.round(file.size / 1024) : 100,
               ocrConfidence: ocrData.confidence || 0.95,
               ocrLatencyMs: ocrData.latencyMs || 500,
+              invoiceArithmeticValid: ocrData.arithmeticValidation?.isValid,
+              invoiceArithmeticDiff: ocrData.arithmeticValidation?.difference,
+              tamperDetected: ocrData.physicalIntegrity?.tamperDetected,
             }
           : undefined,
       };
@@ -428,22 +490,102 @@ export default function InputPengeluaranPage() {
                         </div>
                       </div>
 
-                      {/* OCR Result Chips */}
+                      {/* OCR Result Chips & Invoice Breakdown */}
                       {ocrData && (
-                        <div className="bg-white p-3.5 rounded-xl border border-slate-200 flex flex-col gap-2">
-                          <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">
-                            Data Terdeteksi Otomatis:
-                          </span>
-                          <div className="flex flex-wrap gap-1.5">
-                            <span className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 font-mono text-xs font-semibold border border-slate-200">
-                              {ocrData.vendor}
+                        <div className="bg-white p-4 rounded-xl border border-slate-200 flex flex-col gap-3">
+                          <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                            <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">
+                              Hasil Analisis Faktur Pajak & AI
                             </span>
-                            <span className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 font-mono text-xs font-semibold border border-slate-200">
-                              {ocrData.date}
+                            <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
+                              {ocrData.documentType?.replace(/_/g, " ") || "INVOICE RESMI"}
                             </span>
-                            <span className="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 font-mono font-bold text-xs border border-blue-200">
-                              Rp {(ocrData.amount || 0).toLocaleString("id-ID")}
-                            </span>
+                          </div>
+
+                          {/* Quick Facts */}
+                          <div className="grid grid-cols-2 gap-2 text-xs">
+                            <div className="bg-slate-50 p-2 rounded-lg border border-slate-200">
+                              <span className="text-slate-500 text-[10px] block">No. Faktur</span>
+                              <span className="font-bold text-slate-800 font-mono">
+                                {ocrData.invoiceNumber || "INV/2025/X/918"}
+                              </span>
+                            </div>
+                            <div className="bg-slate-50 p-2 rounded-lg border border-slate-200">
+                              <span className="text-slate-500 text-[10px] block">NPWP Rekanan</span>
+                              <span className="font-bold text-slate-800 font-mono">
+                                {ocrData.taxId || "01.345.678.9-021.000"}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Rincian Item Barang jika ada */}
+                          {ocrData.items && ocrData.items.length > 0 && (
+                            <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                              <span className="text-[10px] text-slate-500 font-bold uppercase block mb-1.5">
+                                Rincian Barang / Jasa:
+                              </span>
+                              <div className="space-y-1">
+                                {ocrData.items.map((it, idx) => (
+                                  <div key={idx} className="flex justify-between items-center text-[11px] text-slate-700">
+                                    <span className="truncate pr-2">
+                                      {it.qty}x {it.name}
+                                    </span>
+                                    <span className="font-mono font-semibold shrink-0">
+                                      Rp {it.totalPrice.toLocaleString("id-ID")}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Ringkasan Finansial & Pajak */}
+                          <div className="space-y-1 text-xs border-t border-slate-100 pt-2">
+                            <div className="flex justify-between text-slate-600">
+                              <span>Subtotal (DPP):</span>
+                              <span className="font-mono">Rp {(ocrData.subtotal || 0).toLocaleString("id-ID")}</span>
+                            </div>
+                            {ocrData.discount ? (
+                              <div className="flex justify-between text-emerald-700">
+                                <span>Potongan / Diskon:</span>
+                                <span className="font-mono">- Rp {ocrData.discount.toLocaleString("id-ID")}</span>
+                              </div>
+                            ) : null}
+                            <div className="flex justify-between text-slate-600">
+                              <span>PPN (11%):</span>
+                              <span className="font-mono">Rp {(ocrData.taxPpn || 0).toLocaleString("id-ID")}</span>
+                            </div>
+                            <div className="flex justify-between font-bold text-slate-900 pt-1 border-t border-dashed border-slate-200 text-sm">
+                              <span>Grand Total Faktur:</span>
+                              <span className="font-mono text-blue-700">
+                                Rp {(ocrData.amount || 0).toLocaleString("id-ID")}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Arithmetic & Forensic Status */}
+                          <div
+                            className={`p-2.5 rounded-lg text-xs flex items-start gap-2 border ${
+                              ocrData.arithmeticValidation?.isValid
+                                ? "bg-emerald-50 text-emerald-900 border-emerald-200"
+                                : "bg-rose-50 text-rose-900 border-rose-200"
+                            }`}
+                          >
+                            {ocrData.arithmeticValidation?.isValid ? (
+                              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                            ) : (
+                              <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                            )}
+                            <div className="leading-snug">
+                              <span className="font-bold block">
+                                {ocrData.arithmeticValidation?.isValid
+                                  ? "Validasi Aritmatika & Pajak Klop"
+                                  : "Peringatan Cacat Hitungan Faktur"}
+                              </span>
+                              <span className="text-[11px] opacity-90">
+                                {ocrData.arithmeticValidation?.notes}
+                              </span>
+                            </div>
                           </div>
                         </div>
                       )}
@@ -545,7 +687,7 @@ export default function InputPengeluaranPage() {
                     {/* Vendor */}
                     <div className="flex flex-col gap-1.5 sm:col-span-2">
                       <label className="text-xs font-semibold text-slate-700 flex items-center justify-between">
-                        <span>Nama Toko / Rekanan Vendor <span className="text-rose-500">*</span></span>
+                        <span>Nama Toko / Rekanan Rekanan Vendor <span className="text-rose-500">*</span></span>
                         {ocrData?.vendor && (
                           <span className="text-xs text-blue-600 font-semibold inline-flex items-center gap-1">
                             <Sparkles className="w-3.5 h-3.5" />
@@ -566,10 +708,64 @@ export default function InputPengeluaranPage() {
                       </div>
                     </div>
 
-                    {/* Nominal */}
+                    {/* Nomor Faktur & NPWP */}
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-semibold text-slate-700">
+                        Nomor Faktur / No. Invoice
+                      </label>
+                      <input
+                        type="text"
+                        value={invoiceNumber}
+                        onChange={(e) => setInvoiceNumber(e.target.value)}
+                        placeholder="Misal: INV-2025/X/8821"
+                        className="w-full h-10 px-3.5 rounded-lg bg-slate-50 text-slate-900 font-mono text-xs border border-slate-300 focus:bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 focus:outline-none transition-all"
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-semibold text-slate-700">
+                        NPWP Vendor (Wajib Faktur Pajak)
+                      </label>
+                      <input
+                        type="text"
+                        value={taxId}
+                        onChange={(e) => setTaxId(e.target.value)}
+                        placeholder="01.345.678.9-021.000"
+                        className="w-full h-10 px-3.5 rounded-lg bg-slate-50 text-slate-900 font-mono text-xs border border-slate-300 focus:bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 focus:outline-none transition-all"
+                      />
+                    </div>
+
+                    {/* Subtotal & PPN */}
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-semibold text-slate-700">
+                        Subtotal / DPP (Rp)
+                      </label>
+                      <input
+                        type="number"
+                        value={subtotal}
+                        onChange={(e) => setSubtotal(e.target.value === "" ? "" : Number(e.target.value))}
+                        placeholder="4500000"
+                        className="w-full h-10 px-3.5 rounded-lg bg-slate-50 text-slate-900 font-mono text-xs border border-slate-300 focus:bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 focus:outline-none transition-all"
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-semibold text-slate-700">
+                        PPN 11% / Pajak (Rp)
+                      </label>
+                      <input
+                        type="number"
+                        value={taxPpn}
+                        onChange={(e) => setTaxPpn(e.target.value === "" ? "" : Number(e.target.value))}
+                        placeholder="495000"
+                        className="w-full h-10 px-3.5 rounded-lg bg-slate-50 text-slate-900 font-mono text-xs border border-slate-300 focus:bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 focus:outline-none transition-all"
+                      />
+                    </div>
+
+                    {/* Nominal Total */}
                     <div className="flex flex-col gap-1.5 sm:col-span-2">
                       <label className="text-xs font-semibold text-slate-700 flex items-center justify-between">
-                        <span>Nominal Transaksi (IDR) <span className="text-rose-500">*</span></span>
+                        <span>Grand Total Pembayaran (IDR) <span className="text-rose-500">*</span></span>
                         <span className="text-xs text-emerald-700 font-medium">
                           Plafon Fast-Track Auto Approval: &lt; Rp 5.000.000
                         </span>
@@ -583,10 +779,25 @@ export default function InputPengeluaranPage() {
                           required
                           value={amount}
                           onChange={(e) => setAmount(e.target.value === "" ? "" : Number(e.target.value))}
-                          placeholder="4750000"
+                          placeholder="4995000"
                           className="w-full h-10 pl-11 pr-3.5 rounded-lg bg-slate-50 text-slate-900 font-mono font-bold text-base border border-slate-300 focus:bg-white focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 focus:outline-none transition-all"
                         />
                       </div>
+
+                      {/* Real-time Mismatch Alert */}
+                      {amount !== "" && ocrData?.amount !== undefined && Math.abs(Number(amount) - ocrData.amount) > 100 && (
+                        <div className="mt-2 p-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs flex items-start gap-2.5">
+                          <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                          <div>
+                            <span className="font-bold block">
+                              Peringatan Ketidaksesuaian Nominal:
+                            </span>
+                            <span className="leading-relaxed block mt-0.5">
+                              Nominal input (<strong>Rp {Number(amount).toLocaleString("id-ID")}</strong>) berbeda dengan total faktur yang dibaca AI (<strong>Rp {ocrData.amount.toLocaleString("id-ID")}</strong>). Selisih <strong>Rp {Math.abs(Number(amount) - ocrData.amount).toLocaleString("id-ID")}</strong> akan dievaluasi dan dicatat oleh mesin forensik sebagai indikasi anomali (+35 Poin).
+                            </span>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Deskripsi */}
