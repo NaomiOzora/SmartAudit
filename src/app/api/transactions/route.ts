@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     }
 
     if (department && department !== "all") {
-      where.department = { contains: department };
+      where.department = { equals: department };
     }
 
     if (status && status !== "all") {
@@ -94,25 +94,100 @@ export async function POST(req: NextRequest) {
       } = item;
 
       if (!applicantName || !department || !vendor || !amount) {
+        if (!isBulk) {
+          return NextResponse.json(
+            {
+              success: false,
+              error:
+                "Data formulir belum lengkap. Pastikan Nama Pemohon, Departemen, Vendor, dan Nominal Grand Total telah terisi.",
+            },
+            { status: 400 }
+          );
+        }
         continue;
       }
 
-      // Generate random kode transaksi berurutan jika tidak ada (format TX-XXXXX)
-      const code = item.code || `TX-${Math.floor(10000 + Math.random() * 90000)}`;
+      // Pastikan tanggal valid untuk database
+      let safeTxnDate = new Date();
+      if (date) {
+        const parsed = new Date(date);
+        if (!isNaN(parsed.getTime())) {
+          safeTxnDate = parsed;
+        }
+      }
 
-      // 1. Evaluasi Fraud Engine (Rule-based + pHash + XAI + Verifikasi Faktur & Pajak)
+      // Generate random kode transaksi berurutan unik (format TX-XXXXX)
+      let code = item.code;
+      if (!code) {
+        let attempts = 0;
+        while (attempts < 5) {
+          const candidate = `TX-${Math.floor(10000 + Math.random() * 90000)}`;
+          const existing = await prisma.transaction.findUnique({ where: { code: candidate } });
+          if (!existing) {
+            code = candidate;
+            break;
+          }
+          attempts++;
+        }
+        if (!code) {
+          code = `TX-${Date.now().toString().slice(-5)}`;
+        }
+      }
+
+      // Ekstrak parameter forensik dari receipt.ocrRawText jika tersedia
+      let ocrParsed: any = null;
+      if (receipt?.ocrRawText) {
+        try {
+          ocrParsed = JSON.parse(receipt.ocrRawText);
+        } catch {}
+      }
+
+      const invoiceNumber = ocrParsed?.invoiceNumber || receipt?.invoiceNumber || item.invoiceNumber;
+      const poNumber = ocrParsed?.poNumber || receipt?.poNumber || item.poNumber;
+      const dueDate = ocrParsed?.dueDate || receipt?.dueDate || item.dueDate;
+      const vendorDetails = ocrParsed?.vendorDetails || receipt?.vendorDetails || item.vendorDetails;
+      const customerDetails = ocrParsed?.customerDetails || receipt?.customerDetails || item.customerDetails;
+      const taxId = ocrParsed?.taxId || receipt?.taxId || item.taxId;
+      const kopTaxId = ocrParsed?.kopTaxId || receipt?.kopTaxId || item.kopTaxId;
+      const subtotal = ocrParsed?.subtotal !== undefined ? Number(ocrParsed.subtotal) : (receipt?.subtotal !== undefined ? Number(receipt.subtotal) : undefined);
+      const taxPpn = ocrParsed?.taxPpn !== undefined ? Number(ocrParsed.taxPpn) : (receipt?.taxPpn !== undefined ? Number(receipt.taxPpn) : undefined);
+      const dpp = ocrParsed?.dpp !== undefined ? Number(ocrParsed.dpp) : (receipt?.dpp !== undefined ? Number(receipt.dpp) : undefined);
+      const paymentInfo = ocrParsed?.paymentInfo || receipt?.paymentInfo || item.paymentInfo;
+      const signatures = ocrParsed?.signatures || receipt?.signatures || item.signatures;
+      const itemsList = ocrParsed?.items || receipt?.items || item.items || [];
+      const rawOcrText = ocrParsed?.rawText || receipt?.ocrRawText || "";
+
+      // 1. Evaluasi Fraud Engine (Rule-based + pHash + XAI + Verifikasi Faktur & Pajak Forensik)
       const evaluation = await evaluateTransactionFraud({
         vendor,
-        date: new Date(date || new Date()),
+        date: safeTxnDate,
         amount: Number(amount),
         category: category || "operasional",
         department,
+        applicantName,
         phashFingerprint: receipt?.phashFingerprint,
         description,
         extractedAmount: receipt?.extractedAmount !== undefined ? Number(receipt.extractedAmount) : undefined,
         invoiceArithmeticValid: receipt?.invoiceArithmeticValid,
         invoiceArithmeticDiff: receipt?.invoiceArithmeticDiff ? Number(receipt.invoiceArithmeticDiff) : undefined,
         tamperDetected: receipt?.tamperDetected,
+        invoiceNumber,
+        poNumber,
+        dueDate,
+        vendorDetails,
+        customerDetails,
+        taxId,
+        kopTaxId,
+        subtotal,
+        discount: ocrParsed?.discount,
+        dpp,
+        taxPpn,
+        taxPph: ocrParsed?.taxPph,
+        otherFees: ocrParsed?.otherFees,
+        paymentInfo,
+        signatures,
+        items: itemsList,
+        rawOcrText,
       });
 
       // Status awal berdasarkan ambang batas PRD (< 40 = AUTO_APPROVED, >= 40 = PENDING_REVIEW)
@@ -128,7 +203,7 @@ export async function POST(req: NextRequest) {
           department,
           category: category || "operasional",
           vendor,
-          date: new Date(date || new Date()),
+          date: safeTxnDate,
           amount: Number(amount),
           description: description || "Pengajuan pengeluaran kas mandiri staf.",
           status: initialStatus,
@@ -138,14 +213,14 @@ export async function POST(req: NextRequest) {
                   imageUrl: receipt.imageUrl || "/mock-receipts/placeholder.jpg",
                   ocrRawText: receipt.ocrRawText || "",
                   extractedVendor: receipt.extractedVendor || vendor,
-                  extractedDate: receipt.extractedDate || (date ? String(date) : ""),
-                  extractedAmount: Number(receipt.extractedAmount || amount),
+                  extractedDate: receipt.extractedDate || safeTxnDate.toISOString().split("T")[0],
+                  extractedAmount: receipt.extractedAmount !== undefined ? Number(receipt.extractedAmount) : 0,
                   phashFingerprint: receipt.phashFingerprint || null,
                   sha256Hash: receipt.sha256Hash || null,
                   mimeType: receipt.mimeType || "image/jpeg",
-                  fileSizeKb: Number(receipt.fileSizeKb || 1200),
+                  fileSizeKb: Math.round(Number(receipt.fileSizeKb || 1200)),
                   ocrConfidence: Number(receipt.ocrConfidence || 0.95),
-                  ocrLatencyMs: Number(receipt.ocrLatencyMs || 1200),
+                  ocrLatencyMs: Math.round(Number(receipt.ocrLatencyMs || 1200)),
                 },
               }
             : undefined,
@@ -182,20 +257,34 @@ export async function POST(req: NextRequest) {
 
       // 3. Jika Fast-Track Auto Approved (< 40%), trigger outbound webhook secara instan!
       if (evaluation.isAutoApproved) {
-        await triggerDisbursementWebhook({
-          id: txn.id,
-          code: txn.code,
-          vendor: txn.vendor,
-          amount: txn.amount,
-          applicantName: txn.applicantName,
-          department: txn.department,
-          riskScore: evaluation.finalScore,
-          approvalType: "AUTO_FAST_TRACK",
-          auditorNotes: "Pencairan instan diautentikasi oleh SmartAudit AI Engine.",
-        });
+        try {
+          await triggerDisbursementWebhook({
+            id: txn.id,
+            code: txn.code,
+            vendor: txn.vendor,
+            amount: txn.amount,
+            applicantName: txn.applicantName,
+            department: txn.department,
+            riskScore: evaluation.finalScore,
+            approvalType: "AUTO_FAST_TRACK",
+            auditorNotes: "Pencairan instan diautentikasi oleh SmartAudit AI Engine.",
+          });
+        } catch (webhookErr) {
+          console.error("Non-blocking outbound webhook error:", webhookErr);
+        }
       }
 
       createdResults.push(txn);
+    }
+
+    if (createdResults.length === 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Tidak ada transaksi yang dapat diproses. Periksa kelengkapan data.",
+        },
+        { status: 400 }
+      );
     }
 
     return NextResponse.json({

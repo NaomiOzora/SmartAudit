@@ -21,7 +21,7 @@ export default function LandingPage() {
       <main className="w-full flex-1 bg-slate-50 pt-16">
         {/* Hero Section */}
         <section className="relative w-full py-16 md:py-24 border-b border-slate-200 bg-white">
-          <div className="mx-auto flex w-full max-w-7xl flex-col items-center px-4 sm:px-6 lg:px-8 text-center">
+          <div className="mx-auto flex w-full max-w-[1600px] flex-col items-center px-6 sm:px-8 lg:px-12 text-center">
             {/* Top Badge */}
             <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-1.5 text-xs font-semibold text-blue-700 border border-blue-200 shadow-xs">
               <ShieldCheck className="w-4 h-4 text-blue-600" />
@@ -78,7 +78,7 @@ export default function LandingPage() {
 
         {/* Features Grid */}
         <section className="w-full py-16 bg-slate-50">
-          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto w-full max-w-[1600px] px-6 sm:px-8 lg:px-12">
             <div className="text-center max-w-3xl mx-auto mb-12">
               <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">
                 Kemampuan Inti SmartAudit

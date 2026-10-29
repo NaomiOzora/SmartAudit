@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { computeSha256 } from "@/lib/hash-utils";
-import { triggerDisbursementWebhook } from "@/lib/webhook-service";
+import { triggerDisbursementWebhook, triggerCancellationWebhook } from "@/lib/webhook-service";
 
 export async function POST(req: NextRequest) {
   try {
@@ -20,6 +20,7 @@ export async function POST(req: NextRequest) {
       },
       include: {
         fraudAnalysis: true,
+        webhookLogs: true,
       },
     });
 
@@ -33,8 +34,9 @@ export async function POST(req: NextRequest) {
     // Tentukan status baru transaksi
     let newStatus = "PENDING_REVIEW";
     if (action === "APPROVED") newStatus = "APPROVED";
-    else if (action === "REJECTED") newStatus = "REJECTED";
+    else if (action === "REJECTED" || action === "INTERRUPT_REJECT") newStatus = "REJECTED";
     else if (action === "CLARIFICATION") newStatus = "NEED_CLARIFICATION";
+    else if (action === "PULL_TO_REVIEW") newStatus = "PENDING_REVIEW";
 
     // Buat tanda tangan tamper-evident hash kriptografis untuk audit ISO 27001
     const signer = auditorName || "Bambang H. (Auditor Forensik)";
@@ -42,6 +44,13 @@ export async function POST(req: NextRequest) {
     const tamperHash = computeSha256(
       `${transaction.code}|${action}|${signer}|${notes || ""}|${timestamp}`
     );
+
+    let auditNote = notes || `Putusan ${action} dicatat ke lembar berita acara pemeriksaan (BAP).`;
+    if (action === "REJECTED" || action === "INTERRUPT_REJECT") {
+      auditNote = `INTERVENSI/PENOLAKAN DANA: ${notes || "Tidak memenuhi standar kepatuhan kas/terindikasi anomali"}. Instruksi pencairan kas otomatis dibatalkan (VOID).`;
+    } else if (action === "PULL_TO_REVIEW") {
+      auditNote = `INTERUPSI AUDITOR: Putusan otomatis AI dianulir. Berkas ditarik kembali ke antrean review manual forensik untuk pengujian lebih lanjut.`;
+    }
 
     // Update status transaksi & simpan AuditLog
     const updatedTransaction = await prisma.transaction.update({
@@ -52,7 +61,7 @@ export async function POST(req: NextRequest) {
           create: {
             auditorName: signer,
             action,
-            notes: notes || "Putusan dicatat ke lembar berita acara.",
+            notes: auditNote,
             tamperHash: `sha256:${tamperHash}`,
           },
         },
@@ -65,7 +74,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Jika Auditor menyetujui ("APPROVED"), segera trigger outbound disbursement webhook!
+    // 1. Jika Auditor menyetujui ("APPROVED"), trigger outbound disbursement webhook
     if (action === "APPROVED") {
       await triggerDisbursementWebhook({
         id: transaction.id,
@@ -77,6 +86,20 @@ export async function POST(req: NextRequest) {
         riskScore: transaction.fraudAnalysis?.riskScore || 50,
         approvalType: "AUDITOR_MANUAL",
         auditorNotes: notes,
+      });
+    }
+
+    // 2. Jika Auditor menolak atau mengintervensi batal ("REJECTED" atau "INTERRUPT_REJECT"), batalkan webhook & instruksi pencairan (VOID)
+    if (action === "REJECTED" || action === "INTERRUPT_REJECT") {
+      await triggerCancellationWebhook({
+        id: transaction.id,
+        code: transaction.code,
+        vendor: transaction.vendor,
+        amount: transaction.amount,
+        applicantName: transaction.applicantName,
+        department: transaction.department,
+        auditorName: signer,
+        rejectionReason: notes || "Transaksi ditolak dalam audit forensik.",
       });
     }
 

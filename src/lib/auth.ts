@@ -5,30 +5,15 @@ import { useRouter } from "next/navigation";
 
 export interface UserSession {
   id: string;
+  nip: string;
   name: string;
   email: string;
   role: "STAFF" | "AUDITOR";
+  department?: string | null;
   title: string;
 }
 
 const STORAGE_KEY = "smartaudit_user_session";
-
-export const DEFAULT_USERS: Record<"STAFF" | "AUDITOR", UserSession> = {
-  STAFF: {
-    id: "USR-001",
-    name: "Siti Rahma",
-    email: "siti.rahma@instansi.go.id",
-    role: "STAFF",
-    title: "Bendahara Pengeluaran",
-  },
-  AUDITOR: {
-    id: "USR-002",
-    name: "Bambang Haryanto",
-    email: "bambang.h@instansi.go.id",
-    role: "AUDITOR",
-    title: "Lead Auditor Forensik",
-  },
-};
 
 export function getStoredSession(): UserSession | null {
   if (typeof window === "undefined") return null;
@@ -60,12 +45,7 @@ export function useAuth(requiredRole?: "STAFF" | "AUDITOR") {
 
   useEffect(() => {
     const syncUser = () => {
-      let current = getStoredSession();
-      // If no session exists yet, default to STAFF so the user can immediately experience the app
-      if (!current) {
-        current = DEFAULT_USERS.STAFF;
-        saveSession(current);
-      }
+      const current = getStoredSession();
       setUser(current);
       setLoading(false);
     };
@@ -82,17 +62,6 @@ export function useAuth(requiredRole?: "STAFF" | "AUDITOR") {
     };
   }, []);
 
-  const login = (role: "STAFF" | "AUDITOR") => {
-    const session = DEFAULT_USERS[role];
-    saveSession(session);
-    setUser(session);
-    if (role === "AUDITOR") {
-      router.push("/antrean-review");
-    } else {
-      router.push("/beranda-staf");
-    }
-  };
-
   const logout = () => {
     clearSession();
     setUser(null);
@@ -104,7 +73,6 @@ export function useAuth(requiredRole?: "STAFF" | "AUDITOR") {
   return {
     user,
     loading,
-    login,
     logout,
     isAuthorized,
   };

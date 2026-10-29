@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { extractReceiptWithAi } from "@/lib/ai-service";
 import { computePerceptualHash, computeSha256 } from "@/lib/hash-utils";
+import { detectCategoryFromInvoice } from "@/lib/expense-categories";
 
 export async function POST(req: NextRequest) {
   try {
@@ -30,7 +31,15 @@ export async function POST(req: NextRequest) {
       file.name
     );
 
-    // 4. Buat URL Data Sementara (atau simpan base64 preview)
+    // 4. Deteksi Kategori Belanja Korporat FMCG Otomatis via AI
+    const categoryAnalysis = detectCategoryFromInvoice({
+      vendor: ocrResult.vendor,
+      items: ocrResult.items,
+      description: ocrResult.notes,
+      rawText: ocrResult.rawText,
+    });
+
+    // 5. Buat URL Data Sementara (base64 preview)
     const previewBase64 = `data:${file.type || "image/jpeg"};base64,${buffer.toString("base64")}`;
 
     return NextResponse.json({
@@ -42,20 +51,31 @@ export async function POST(req: NextRequest) {
         sha256Hash,
         phashFingerprint,
         previewUrl: previewBase64,
+        suggestedCategory: categoryAnalysis.categoryId,
+        categoryLabel: categoryAnalysis.label,
+        categoryConfidence: categoryAnalysis.confidence,
         documentType: ocrResult.documentType,
         vendor: ocrResult.vendor,
+        vendorDetails: ocrResult.vendorDetails,
+        customerDetails: ocrResult.customerDetails,
         taxId: ocrResult.taxId,
         invoiceNumber: ocrResult.invoiceNumber,
+        poNumber: ocrResult.poNumber,
         date: ocrResult.date,
         dueDate: ocrResult.dueDate,
         items: ocrResult.items,
         subtotal: ocrResult.subtotal,
         discount: ocrResult.discount,
+        dpp: ocrResult.dpp,
         taxPpn: ocrResult.taxPpn,
         taxPph: ocrResult.taxPph,
         otherFees: ocrResult.otherFees,
         amount: ocrResult.amount,
         currency: ocrResult.currency,
+        terbilang: ocrResult.terbilang,
+        paymentInfo: ocrResult.paymentInfo,
+        notes: ocrResult.notes,
+        signatures: ocrResult.signatures,
         arithmeticValidation: ocrResult.arithmeticValidation,
         physicalIntegrity: ocrResult.physicalIntegrity,
         rawText: ocrResult.rawText,
@@ -63,7 +83,6 @@ export async function POST(req: NextRequest) {
         latencyMs: ocrResult.latencyMs,
         engineUsed: ocrResult.engineUsed,
         fallbackTriggered: ocrResult.fallbackTriggered,
-        notes: ocrResult.notes,
       },
     });
   } catch (error: unknown) {

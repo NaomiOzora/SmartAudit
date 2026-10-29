@@ -24,7 +24,7 @@ export async function computePerceptualHash(imageBuffer: Buffer): Promise<string
 
     // Deteksi format JPEG / JPG
     if (imageBuffer[0] === 0xff && imageBuffer[1] === 0xd8) {
-      const decoded = jpeg.decode(imageBuffer, { useTArray: true });
+      const decoded = jpeg.decode(imageBuffer, { useTArray: true, formatAsRGBA: true });
       width = decoded.width;
       height = decoded.height;
       data = decoded.data;
@@ -57,7 +57,7 @@ export async function computePerceptualHash(imageBuffer: Buffer): Promise<string
           const r = data[idx] ?? 0;
           const g = data[idx + 1] ?? 0;
           const b = data[idx + 2] ?? 0;
-          // Grayscale luminance
+          // Grayscale luminance ITU-R BT.601
           const gray = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
           grayMatrix[y].push(gray);
         }
@@ -149,7 +149,13 @@ export async function checkDatabaseDuplicateHash(
   targetTransactionId?: string;
   similarity: number;
 } | null> {
-  if (!currentPhash) return null;
+  // Cegah false positive jika pHash kosong atau dummy all-zero
+  if (!currentPhash || currentPhash === "0000000000000000" || /^0+$/.test(currentPhash)) {
+    return {
+      isDuplicate: false,
+      similarity: 0,
+    };
+  }
 
   const existingReceipts = await prisma.receipt.findMany({
     where: excludeTransactionId
@@ -169,7 +175,9 @@ export async function checkDatabaseDuplicateHash(
   let matchedReceipt: (typeof existingReceipts)[0] | null = null;
 
   for (const item of existingReceipts) {
-    if (!item.phashFingerprint) continue;
+    if (!item.phashFingerprint || item.phashFingerprint === "0000000000000000" || /^0+$/.test(item.phashFingerprint)) {
+      continue;
+    }
     const sim = calculateHashSimilarity(currentPhash, item.phashFingerprint);
     if (sim > highestSim) {
       highestSim = sim;
@@ -177,7 +185,7 @@ export async function checkDatabaseDuplicateHash(
     }
   }
 
-  // Ambang batas PRD: > 85% (0.85)
+  // Ambang batas standar pHash: >= 85% (0.85)
   if (highestSim >= 0.85 && matchedReceipt) {
     return {
       isDuplicate: true,

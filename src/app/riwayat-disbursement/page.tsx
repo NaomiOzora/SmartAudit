@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import AuditorSidebar from "@/components/AuditorSidebar";
 import { useAuth } from "@/lib/auth";
 import {
   ChevronRight,
@@ -10,6 +12,11 @@ import {
   X,
   FileClock,
   Radio,
+  AlertTriangle,
+  ArrowRight,
+  CheckCircle2,
+  XCircle,
+  Ban,
 } from "lucide-react";
 
 interface WebhookLogItem {
@@ -31,7 +38,7 @@ interface WebhookLogItem {
 }
 
 export default function RiwayatDisbursementPage() {
-  const { user } = useAuth();
+  const { user } = useAuth("AUDITOR");
   const [logs, setLogs] = useState<WebhookLogItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedPayload, setSelectedPayload] = useState<string | null>(null);
@@ -55,45 +62,70 @@ export default function RiwayatDisbursementPage() {
     }
   };
 
+  // Proteksi Akses Dimensi: Staf Biasa Dilarang Mengakses Telemetri Webhook Kasir
+  if (user && user.role !== "AUDITOR") {
+    return (
+      <>
+        <Navbar currentRole="STAFF" />
+        <main className="w-full min-h-screen pt-24 px-4 flex items-center justify-center bg-slate-50">
+          <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-md max-w-md text-center">
+            <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-600 inline-flex items-center justify-center mx-auto mb-4">
+              <AlertTriangle className="w-6 h-6" />
+            </div>
+            <h2 className="text-lg font-bold text-slate-900">Akses Dibatasi: Khusus Auditor Forensik</h2>
+            <p className="text-sm text-slate-600 mt-2 mb-6 leading-relaxed">
+              Modul telemetri riwayat webhook pencairan kas ERP diperuntukkan bagi <strong>Auditor Forensik & Verifikator Sistem</strong>.
+            </p>
+            <Link
+              href="/beranda-staf"
+              prefetch={false}
+              className="h-10 px-5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold inline-flex items-center gap-2 transition-colors shadow-xs"
+            >
+              <span>Kembali ke Beranda Staf</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </main>
+      </>
+    );
+  }
+
   return (
     <>
-      <Navbar currentRole={user?.role || "STAFF"} />
+      <Navbar currentRole="AUDITOR" />
+      <AuditorSidebar />
 
-      <main className="w-full min-h-screen pt-20 px-4 sm:px-6 lg:px-8 pb-16 bg-slate-50">
-        <div className="w-full max-w-7xl mx-auto space-y-6 pt-2">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <div className="inline-flex items-center gap-2 text-slate-500 text-xs uppercase tracking-wider mb-1 font-semibold">
-                <span>Modul Integrasi Kas</span>
-                <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                <span className="text-blue-600 font-semibold">Outbound Webhook Telemetry</span>
-              </div>
-              <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-                Riwayat Pencairan Kas & Outbound Webhook
+      <div className="lg:pl-64 flex flex-col min-h-screen bg-slate-50 pt-16">
+        <main className="w-full max-w-[1600px] mx-auto p-6 sm:px-8 lg:px-10 py-6 space-y-6">
+          {/* Header Ringkas & Memanjang */}
+          <div className="flex items-center justify-between gap-4 pb-1">
+            <div className="flex items-center gap-3">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                Riwayat Webhook ERP
               </h1>
-              <p className="text-sm text-slate-500 mt-1">
-                Monitoring transmisi otomatis instruksi pencairan dana ke sistem ERP / Bank Kasir eksternal.
-              </p>
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">
+                {logs.length} transmisi
+              </span>
             </div>
 
             <button
               type="button"
               onClick={fetchWebhookLogs}
-              className="h-10 px-4 rounded-xl border border-slate-200 bg-white text-slate-700 text-sm font-semibold inline-flex items-center gap-2 hover:bg-slate-50 transition-colors shadow-xs self-start"
+              className="h-9 px-3.5 rounded-lg border border-slate-200 bg-white text-slate-700 text-xs sm:text-sm font-medium inline-flex items-center gap-2 hover:bg-slate-50 transition-colors shadow-xs cursor-pointer"
             >
-              <RefreshCw className="w-4 h-4 text-blue-600 shrink-0" />
-              <span>Segarkan Telemetri</span>
+              <RefreshCw className={`w-3.5 h-3.5 text-blue-600 shrink-0 ${loading ? "animate-spin" : ""}`} />
+              <span>Segarkan</span>
             </button>
           </div>
 
-          {/* Table Container - Generous & Roomy */}
+          {/* Table Container */}
           <div className="bg-white rounded-2xl shadow-xs border border-slate-200/90 overflow-hidden">
-            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-white">
+            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-white flex-wrap gap-2">
               <span className="text-base font-bold text-slate-900">
                 Log Transmisi Webhook Eksternal
               </span>
-              <span className="font-mono text-xs text-emerald-700 font-semibold px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200">
-                POST /api/webhook/finance/disbursement
+              <span className="font-mono text-xs text-slate-700 font-semibold px-3 py-1 rounded-full bg-slate-100 border border-slate-200">
+                Target: POST /api/webhook/finance/disbursement
               </span>
             </div>
 
@@ -103,10 +135,10 @@ export default function RiwayatDisbursementPage() {
                   <tr className="bg-slate-50/80 text-slate-600 font-bold text-xs uppercase tracking-wider border-b border-slate-200/80">
                     <th className="py-3.5 px-6 font-semibold">Waktu Dispatch</th>
                     <th className="py-3.5 px-4 font-semibold">Kode Transaksi</th>
-                    <th className="py-3.5 px-4 font-semibold">Penerima & Divisi</th>
+                    <th className="py-3.5 px-4 font-semibold">Event / Penerima</th>
                     <th className="py-3.5 px-4 font-semibold text-right">Nominal</th>
-                    <th className="py-3.5 px-4 font-semibold text-center">Status HTTP</th>
-                    <th className="py-3.5 px-6 font-semibold text-right">Payload</th>
+                    <th className="py-3.5 px-4 font-semibold text-center">Status Transmisi</th>
+                    <th className="py-3.5 px-6 font-semibold text-right">Payload JSON</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-slate-700">
@@ -114,62 +146,74 @@ export default function RiwayatDisbursementPage() {
                     <tr>
                       <td colSpan={6} className="py-12 text-center text-slate-400">
                         <FileClock className="w-8 h-8 animate-spin text-blue-600 mx-auto" />
-                        <p className="mt-2 text-sm">Memuat log webhook...</p>
+                        <p className="mt-2 text-sm font-medium">Memuat log webhook...</p>
                       </td>
                     </tr>
                   ) : logs.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="py-12 text-center text-slate-400">
-                        <Radio className="w-10 h-10 text-slate-300 mx-auto" />
-                        <p className="mt-2 font-semibold text-sm text-slate-600">Belum ada pengiriman webhook</p>
-                        <p className="text-xs text-slate-400 mt-0.5">
-                          Transaksi yang disetujui otomatis atau disetujui auditor akan memicu transmisi webhook.
+                      <td colSpan={6} className="py-12 text-center text-slate-500">
+                        <Radio className="w-8 h-8 text-slate-400 mx-auto mb-2 opacity-60" />
+                        <p className="font-semibold text-slate-800">Belum Ada Transmisi Webhook</p>
+                        <p className="text-xs text-slate-400 mt-1">
+                          Webhook otomatis tertembak saat transaksi disetujui (Approved) atau dibatalkan (Cancelled).
                         </p>
                       </td>
                     </tr>
                   ) : (
                     logs.map((log) => {
-                      const isOk = log.statusCode === 200;
+                      let parsedPayload: any = {};
+                      try {
+                        parsedPayload = JSON.parse(log.payload);
+                      } catch {}
+
+                      const isCancelled = log.status === "CANCELLED" || parsedPayload.event?.includes("CANCEL");
+                      const isSuccess = log.status === "SUCCESS";
+
                       return (
                         <tr key={log.id} className="hover:bg-slate-50/80 transition-colors">
-                          <td className="py-4 px-6 font-mono text-slate-500 text-xs whitespace-nowrap">
+                          <td className="py-3.5 px-6 text-xs text-slate-500 font-mono whitespace-nowrap">
                             {new Date(log.createdAt).toLocaleString("id-ID")}
                           </td>
-                          <td className="py-4 px-4 font-mono text-blue-600 font-bold text-sm">
-                            {log.transaction?.code || "TX-UNKNOWN"}
+                          <td className="py-3.5 px-4 font-mono font-bold text-slate-900 text-xs">
+                            {log.transaction?.code || parsedPayload.transactionId || "-"}
                           </td>
-                          <td className="py-4 px-4">
-                            <span className="font-semibold text-slate-900 block text-sm">
-                              {log.transaction?.vendor}
+                          <td className="py-3.5 px-4 text-xs">
+                            <span className="font-semibold text-slate-900 block truncate max-w-[200px]">
+                              {log.transaction?.vendor || parsedPayload.vendor || "Kasir Eksternal"}
                             </span>
-                            <span className="text-xs text-slate-500 mt-0.5 block">
-                              {log.transaction?.applicantName} &bull; {log.transaction?.department}
-                            </span>
-                          </td>
-                          <td className="py-4 px-4 font-mono font-bold text-right text-slate-900 whitespace-nowrap text-sm">
-                            Rp {(log.transaction?.amount || 0).toLocaleString("id-ID")}
-                          </td>
-                          <td className="py-4 px-4 text-center">
-                            <span
-                              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold ${
-                                isOk
-                                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                                  : "bg-rose-50 text-rose-700 border border-rose-200"
-                              }`}
-                            >
-                              <span
-                                className={`w-2 h-2 rounded-full shrink-0 ${isOk ? "bg-emerald-500" : "bg-rose-500"}`}
-                              ></span>
-                              <span>HTTP {log.statusCode} {log.status}</span>
+                            <span className="text-[11px] text-slate-500 block">
+                              {parsedPayload.applicant ? `Pemohon: ${parsedPayload.applicant}` : ""}
                             </span>
                           </td>
-                          <td className="py-4 px-6 text-right">
+                          <td className="py-3.5 px-4 text-xs font-mono font-bold text-right text-slate-900">
+                            Rp {(log.transaction?.amount || parsedPayload.amount || 0).toLocaleString("id-ID")}
+                          </td>
+                          <td className="py-3.5 px-4 text-center">
+                            {isCancelled ? (
+                              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200 whitespace-nowrap shrink-0">
+                                <Ban className="w-3 h-3 text-rose-600 shrink-0" />
+                                <span>VOID (Dibatalkan)</span>
+                              </span>
+                            ) : isSuccess ? (
+                              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 whitespace-nowrap shrink-0">
+                                <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
+                                <span>200 OK (Terkirim)</span>
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200 whitespace-nowrap shrink-0">
+                                <XCircle className="w-3 h-3 text-rose-600 shrink-0" />
+                                <span>{log.statusCode || 500} Gagal</span>
+                              </span>
+                            )}
+                          </td>
+                          <td className="py-3.5 px-6 text-right">
                             <button
                               type="button"
                               onClick={() => setSelectedPayload(log.payload)}
-                              className="px-3.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold transition-colors border border-slate-200"
+                              className="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-100 text-blue-600 font-semibold text-xs inline-flex items-center gap-1 transition-colors cursor-pointer"
                             >
-                              Lihat JSON
+                              <FileCode className="w-3.5 h-3.5" />
+                              <span>Lihat JSON</span>
                             </button>
                           </td>
                         </tr>
@@ -180,47 +224,52 @@ export default function RiwayatDisbursementPage() {
               </table>
             </div>
           </div>
+        </main>
+      </div>
 
-          {/* JSON Payload Inspector Modal */}
-          {selectedPayload && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
-              <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                  <div className="inline-flex items-center gap-2">
-                    <FileCode className="w-5 h-5 text-blue-600 shrink-0" />
-                    <h3 className="text-base font-bold text-slate-900">
-                      Outbound Webhook JSON Payload
-                    </h3>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedPayload(null)}
-                    className="w-8 h-8 rounded-lg inline-flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-
-                <div className="mt-4 bg-slate-900 p-4 rounded-xl overflow-x-auto max-h-96 border border-slate-800">
-                  <pre className="font-mono text-xs text-slate-200 leading-relaxed whitespace-pre-wrap">
-                    {JSON.stringify(JSON.parse(selectedPayload), null, 2)}
-                  </pre>
-                </div>
-
-                <div className="mt-5 pt-3 border-t border-slate-100 flex justify-end">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedPayload(null)}
-                    className="h-10 px-5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm transition-colors"
-                  >
-                    Tutup
-                  </button>
-                </div>
+      {/* JSON Payload Inspector Modal */}
+      {selectedPayload && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden">
+            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+              <div className="flex items-center gap-2">
+                <FileCode className="w-5 h-5 text-blue-600" />
+                <h3 className="font-bold text-slate-900 text-sm">Inspeksi Payload JSON Webhook</h3>
               </div>
+              <button
+                type="button"
+                onClick={() => setSelectedPayload(null)}
+                className="w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-500 inline-flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
-          )}
+
+            <div className="p-6 overflow-y-auto bg-slate-950 font-mono text-xs text-emerald-400">
+              <pre className="whitespace-pre-wrap leading-relaxed">
+                {(() => {
+                  try {
+                    return JSON.stringify(JSON.parse(selectedPayload), null, 2);
+                  } catch {
+                    return selectedPayload;
+                  }
+                })()}
+              </pre>
+            </div>
+
+            <div className="px-6 py-3 border-t border-slate-100 flex items-center justify-between bg-white text-xs text-slate-500">
+              <span>Paket data transmisi mesin kasir eksternal.</span>
+              <button
+                type="button"
+                onClick={() => setSelectedPayload(null)}
+                className="px-4 py-1.5 rounded-lg bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-colors cursor-pointer"
+              >
+                Tutup
+              </button>
+            </div>
+          </div>
         </div>
-      </main>
+      )}
     </>
   );
 }

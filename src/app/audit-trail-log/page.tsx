@@ -109,32 +109,26 @@ export default function AuditTrailLogPage() {
       <AuditorSidebar />
 
       <div className="lg:pl-64 flex flex-col min-h-screen bg-slate-50 pt-16">
-        <main className="w-full flex-1 px-4 sm:px-6 lg:px-8 py-6">
-          <div className="w-full max-w-7xl mx-auto space-y-6">
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
-                <div className="inline-flex items-center gap-3 flex-wrap mb-1">
-                  <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-                    Jejak Audit Forensik Kriptografis (Audit Trail)
-                  </h1>
-                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
-                    ISO 27001 Immutable Log
-                  </span>
-                </div>
-                <p className="text-sm text-slate-500">
-                  Rekaman kronologis putusan verifikasi dilindungi tanda tangan integritas SHA-256 yang kebal manipulasi data.
-                </p>
+        <main className="w-full flex-1 px-6 sm:px-8 lg:px-10 py-6">
+          <div className="w-full max-w-[1600px] mx-auto space-y-6">
+            {/* Header Ringkas & Memanjang */}
+            <div className="flex items-center justify-between gap-4 pb-1">
+              <div className="flex items-center gap-3">
+                <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                  Jejak Audit Trail
+                </h1>
+                <span className="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">
+                  {logs.length} entri SHA-256
+                </span>
               </div>
 
               <button
                 type="button"
                 onClick={fetchLogs}
-                className="h-10 px-4 rounded-xl border border-slate-200 bg-white text-slate-700 text-sm font-semibold inline-flex items-center gap-2 hover:bg-slate-50 transition-colors shadow-xs self-start"
+                className="h-9 px-3.5 rounded-lg border border-slate-200 bg-white text-slate-700 text-xs sm:text-sm font-medium inline-flex items-center gap-2 hover:bg-slate-50 transition-colors shadow-xs cursor-pointer"
               >
-                <RefreshCw className="w-4 h-4 text-blue-600 shrink-0" />
-                <span>Segarkan Log</span>
+                <RefreshCw className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                <span>Segarkan</span>
               </button>
             </div>
 

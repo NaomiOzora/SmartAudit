@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth";
-import { ShieldCheck, LogOut, ArrowRight } from "lucide-react";
+import { ShieldCheck, LogOut, ArrowRight, UserCircle2 } from "lucide-react";
 
 interface NavbarProps {
   currentRole?: "STAFF" | "AUDITOR" | "GUEST";
@@ -15,66 +15,105 @@ export default function Navbar({ currentRole }: NavbarProps) {
 
   const effectiveRole = currentRole || user?.role || "GUEST";
 
+  // Dimensi Menu Staf Keuangan (Sederhana & Ringkas)
   const staffLinks = [
-    { label: "Beranda Staf", href: "/beranda-staf" },
+    { label: "Beranda", href: "/beranda-staf" },
     { label: "Input Pengeluaran", href: "/input-pengeluaran" },
-    { label: "Riwayat Webhook", href: "/riwayat-disbursement" },
     { label: "Panduan SOP", href: "/panduan-kepatuhan" },
   ];
 
+  // Mobile links for auditor (on desktop, sidebar is used)
   const auditorLinks = [
-    { label: "Antrean Review", href: "/antrean-review" },
+    { label: "Antrean", href: "/antrean-review" },
+    { label: "Validasi AI", href: "/validasi-ai" },
     { label: "Audit Trail", href: "/audit-trail-log" },
-    { label: "Riwayat Webhook", href: "/riwayat-disbursement" },
-    { label: "Panduan SOP", href: "/panduan-kepatuhan" },
+    { label: "Webhook ERP", href: "/riwayat-disbursement" },
+    { label: "SOP", href: "/panduan-kepatuhan" },
   ];
 
-  const activeLinks = effectiveRole === "AUDITOR" ? auditorLinks : staffLinks;
+  const brandHref =
+    effectiveRole === "AUDITOR"
+      ? "/antrean-review"
+      : effectiveRole === "STAFF"
+      ? "/beranda-staf"
+      : "/";
 
   return (
-    <header className="fixed top-0 left-0 right-0 h-16 z-50 bg-white border-b border-slate-200 shadow-xs">
-      <div className="w-full max-w-7xl mx-auto h-16 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        {/* Brand Logo & Role Badge */}
-        <div className="flex items-center gap-4">
-          <Link href="/" className="inline-flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-blue-600 inline-flex items-center justify-center text-white shrink-0 group-hover:bg-blue-700 transition-colors shadow-xs">
+    <header className="fixed top-0 left-0 right-0 h-16 z-50 bg-white border-b border-slate-200">
+      <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 h-16 flex items-center justify-between">
+        {/* Brand Logo & Ringkas Badge */}
+        <div className="flex items-center gap-3 sm:gap-4">
+          <Link href={brandHref} className="inline-flex items-center gap-2.5 group">
+            <div
+              className={`w-9 h-9 rounded-xl inline-flex items-center justify-center text-white shrink-0 transition-colors shadow-xs ${
+                effectiveRole === "AUDITOR"
+                  ? "bg-rose-600 group-hover:bg-rose-700"
+                  : "bg-blue-600 group-hover:bg-blue-700"
+              }`}
+            >
               <ShieldCheck className="w-5 h-5" />
             </div>
-            <div className="flex flex-col">
-              <span className="text-base font-bold tracking-tight text-slate-900 leading-tight">
-                Smart<span className="text-blue-600">Audit</span>
-              </span>
-              <span className="text-[10px] text-slate-400 font-medium tracking-wide">
-                ENTERPRISE v4.0
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-base font-bold tracking-tight text-slate-900">
+                Smart<span className={effectiveRole === "AUDITOR" ? "text-rose-600" : "text-blue-600"}>Audit</span>
               </span>
             </div>
           </Link>
 
           {effectiveRole !== "GUEST" && (
-            <div className="hidden sm:inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border whitespace-nowrap shrink-0">
               <span
-                className={`w-2 h-2 rounded-full ${
-                  effectiveRole === "AUDITOR" ? "bg-rose-500" : "bg-blue-600"
+                className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                  effectiveRole === "AUDITOR" ? "bg-rose-600" : "bg-blue-600"
                 }`}
               ></span>
-              <span className="font-semibold">{effectiveRole === "AUDITOR" ? "Auditor Forensik" : "Staf Keuangan"}</span>
+              <span
+                className={`whitespace-nowrap ${
+                  effectiveRole === "AUDITOR" ? "text-rose-700" : "text-blue-700"
+                }`}
+              >
+                {effectiveRole === "AUDITOR" ? "Satuan Audit Penjamin Keuangan" : "Purchasing & Pengadaan"}
+              </span>
             </div>
           )}
 
-          {/* Navigation Links */}
-          {effectiveRole !== "GUEST" && (
-            <nav className="hidden md:flex items-center gap-1.5 ml-4">
-              {activeLinks.map((link) => {
+          {/* Navigation Links for Staff */}
+          {effectiveRole === "STAFF" && (
+            <nav className="hidden md:flex items-center gap-1 ml-2">
+              {staffLinks.map((link) => {
                 const isActive = pathname === link.href;
                 return (
                   <Link
                     key={link.href}
                     href={link.href}
                     prefetch={false}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
                       isActive
-                        ? "text-blue-700 bg-blue-50 font-semibold border border-blue-100"
+                        ? "text-blue-700 bg-blue-50 font-semibold"
                         : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </nav>
+          )}
+
+          {/* Navigation Links for Auditor on Mobile Only (Desktop uses AuditorSidebar) */}
+          {effectiveRole === "AUDITOR" && (
+            <nav className="flex lg:hidden items-center gap-1 ml-2">
+              {auditorLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    prefetch={false}
+                    className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
+                      isActive
+                        ? "text-rose-700 bg-rose-50 font-semibold border border-rose-200"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                     }`}
                   >
                     {link.label}
@@ -90,51 +129,34 @@ export default function Navbar({ currentRole }: NavbarProps) {
           {effectiveRole === "GUEST" ? (
             <div className="flex items-center gap-3">
               <Link
-                href="/panduan-kepatuhan"
-                prefetch={false}
-                className="hidden sm:inline-flex px-3 py-1.5 text-slate-600 hover:text-slate-900 text-sm font-medium transition-colors"
-              >
-                Panduan SOP
-              </Link>
-              <Link
                 href="/login"
                 prefetch={false}
-                className="h-9 px-4 inline-flex items-center gap-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 text-sm font-medium transition-colors shadow-xs"
+                className="h-9 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold inline-flex items-center gap-2 transition-colors shadow-xs"
               >
-                <span>Masuk Sistem</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>Masuk Akun</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           ) : (
             <div className="flex items-center gap-3">
-              {/* User Profile Pill */}
-              <div className="flex items-center gap-2.5 pl-2">
-                <div
-                  className={`w-8 h-8 rounded-full inline-flex items-center justify-center text-white font-semibold text-xs shrink-0 shadow-xs ${
-                    effectiveRole === "AUDITOR" ? "bg-rose-600" : "bg-blue-600"
-                  }`}
-                >
-                  {effectiveRole === "AUDITOR" ? "BH" : "SR"}
-                </div>
-                <div className="hidden lg:flex flex-col text-left">
-                  <span className="text-sm text-slate-900 leading-tight font-semibold">
-                    {effectiveRole === "AUDITOR" ? "Bambang Haryanto" : "Siti Rahma"}
-                  </span>
-                  <span className="text-xs text-slate-500 leading-tight">
-                    {effectiveRole === "AUDITOR" ? "Lead Auditor" : "Bendahara"}
-                  </span>
-                </div>
+              <div className="hidden sm:flex items-center gap-2 text-right">
+                <span className="text-xs font-semibold text-slate-800">
+                  {user?.name || (effectiveRole === "AUDITOR" ? "Bambang H." : "Siti Rahma")}
+                </span>
+                <span className="text-slate-300">&bull;</span>
+                <span className="text-xs text-slate-500">
+                  {user?.department || (effectiveRole === "AUDITOR" ? "Satuan Audit Penjamin Keuangan" : "Finance, Accounting & Tax")}
+                </span>
               </div>
 
-              {/* Dedicated Logout Button */}
               <button
                 type="button"
                 onClick={logout}
-                className="h-9 px-3 inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white hover:bg-rose-50 hover:text-rose-700 hover:border-rose-200 text-slate-700 text-xs font-semibold transition-colors shadow-xs"
-                title="Keluar dari akun saat ini"
+                title="Keluar dari sesi"
+                className="h-8 px-3 rounded-lg border border-slate-200 text-slate-600 hover:text-rose-600 hover:bg-rose-50 hover:border-rose-200 text-xs font-medium inline-flex items-center gap-1.5 transition-colors cursor-pointer"
               >
-                <LogOut className="w-4 h-4 text-slate-400 group-hover:text-rose-600" />
-                <span className="hidden sm:inline">Keluar</span>
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Keluar</span>
               </button>
             </div>
           )}
