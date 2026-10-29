@@ -67,17 +67,31 @@ Buka browser dan akses: **[http://localhost:3000](http://localhost:3000)** 🎉
 
 ---
 
-## 🔑 Akun Login Uji Coba (Demo Accounts)
+## 🔑 Akun Login Uji Coba (30 Akun Siap Pakai di Database)
 
-Di halaman **`/login`**, Anda dapat menggunakan tombol **1-Click Quick Demo Login** atau mengetikkan NIP berikut:
+Sistem **tidak membatasi** akun pengujian. Seluruh **30 pegawai** (3 Auditor Forensik + 27 Staf Purchasing dari 9 Divisi FMCG) yang tersimpan di database dapat digunakan untuk login kapan saja!
 
-| Peran | Nama Pengguna | NIP / Akun | Divisi / Satuan Kerja | Dashboard |
+Cukup masukkan **NIP** atau **Email** di halaman `/login` dengan kata sandi bebas (minimal 6 karakter, contoh: `password123` atau `123456`).
+
+### 1. Satuan Audit Penjamin Keuangan (Auditor Forensik)
+| Nama Auditor | NIP Kedinasan | Email Resmi | Peran & Akses |
+|---|---|---|---|
+| **Bambang H.** | `19840212` | `bambang.h@instansi.go.id` | Lead Auditor Forensik (`/antrean-review`) |
+| **Dra. Maya Anggraeni, Ak.** | `19860514` | `maya.anggraeni@smartaudit.co.id` | Senior Auditor Kepatuhan (`/antrean-review`) |
+| **Raden Wijaya, CA., CFE** | `19830920` | `raden.wijaya@smartaudit.co.id` | Certified Fraud Examiner (`/antrean-review`) |
+
+### 2. Staf Purchasing & Pengadaan per 9 Divisi FMCG
+| Departemen / Divisi | Pagu 3&sigma; Max | Nama Staf Pengadaan | NIP | Email Login |
 |---|---|---|---|---|
-| **Auditor Forensik** | Bambang H. | `19840212` | Satuan Audit Penjamin Keuangan | `/antrean-review` |
-| **Auditor Forensik** | Dra. Maya Anggraeni, Ak. | `19860514` | Satuan Audit Penjamin Keuangan | `/antrean-review` |
-| **Staf Pemohon** | Nurul Hidayah, M.Sc | `19940822` | Research & Development (R&D) | `/beranda-staf` |
-| **Staf Pemohon** | Bagus Saputra | `19910105` | Sales & Commercial | `/beranda-staf` |
-| **Staf Pemohon** | Siti Rahma | `19900315` | Finance, Accounting & Tax | `/beranda-staf` |
+| **R&D & Regulatory Affairs** | Rp 45.000.000 | **Nurul Hidayah, M.Sc**<br>Dr. Farhan Maulana<br>Ilham Ramadhan | `19920830`<br>`19860416`<br>`19940525` | `nurul.hidayah@smartaudit.co.id`<br>`farhan.maulana@smartaudit.co.id`<br>`ilham.ramadhan@smartaudit.co.id` |
+| **Manufacturing & Operations** | Rp 75.000.000 | **Joko Triwahyudi**<br>Ratna Wulandari<br>Arif Budiman | `19850720`<br>`19911204`<br>`19880311` | `joko.triwahyudi@smartaudit.co.id`<br>`ratna.wulandari@smartaudit.co.id`<br>`arif.budiman@smartaudit.co.id` |
+| **Supply Chain & Logistics** | Rp 70.000.000 | **Rian Pratama**<br>Dewi Lestari<br>Budi Santoso | `19881112`<br>`19900219`<br>`19890915` | `rian.pratama@instansi.go.id`<br>`dewi.lestari@smartaudit.co.id`<br>`budi.santoso@smartaudit.co.id` |
+| **IT & Digital Transformation** | Rp 65.000.000 | **Dimas Pratama**<br>Dina Marlina<br>Reza Oktaviano | `19900823`<br>`19940718`<br>`19960114` | `dimas.pratama@instansi.go.id`<br>`dina.marlina@instansi.go.id`<br>`reza.oktaviano@smartaudit.co.id` |
+| **Marketing & Brand Management**| Rp 60.000.000 | **Hendra Kusuma**<br>Alika Nadia<br>Rendy Prasetyo | `19870305`<br>`19941108`<br>`19920617` | `hendra.kusuma@instansi.go.id`<br>`alika.nadia@smartaudit.co.id`<br>`rendy.prasetyo@smartaudit.co.id` |
+| **Finance, Accounting & Tax** | Rp 55.000.000 | **Siti Rahma**<br>Wahyu Pratama, SE<br>Melani Putri | `19920415`<br>`19890814`<br>`19950319` | `siti.rahma@instansi.go.id`<br>`wahyu.pratama@smartaudit.co.id`<br>`melani.putri@smartaudit.co.id` |
+| **Sales & Commercial** | Rp 50.000.000 | **Bagus Saputra**<br>Clarissa Utami<br>Kevin Adiputra | `19910105`<br>`19930812`<br>`19950422` | `bagus.saputra@smartaudit.co.id`<br>`clarissa.utami@smartaudit.co.id`<br>`kevin.adiputra@smartaudit.co.id` |
+| **Legal & Corporate Governance**| Rp 40.000.000 | **Faisal Akbar, SH**<br>Pratiwi Handayani, MH<br>Bayu Wicaksono | `19880126`<br>`19910518`<br>`19930709` | `faisal.akbar@smartaudit.co.id`<br>`pratiwi.handayani@smartaudit.co.id`<br>`bayu.wicaksono@smartaudit.co.id` |
+| **HR & Corporate Affairs** | Rp 35.000.000 | **Anisa Fitriani**<br>Dedi Suryadi<br>Nadia Safitri | `19900912`<br>`19871103`<br>`19931021` | `anisa.fitriani@smartaudit.co.id`<br>`dedi.suryadi@smartaudit.co.id`<br>`nadia.safitri@smartaudit.co.id` |
 
 ---
 
