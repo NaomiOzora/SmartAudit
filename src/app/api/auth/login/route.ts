@@ -42,6 +42,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Verifikasi kata sandi (cocokkan dengan password di database atau fallback 'password123')
+    if (user.password && user.password !== password && password !== "password123") {
+      return NextResponse.json(
+        {
+          error: `Kata sandi yang Anda masukkan salah. Kata sandi untuk divisi/role ini adalah: '${user.password}'.`,
+        },
+        { status: 401 }
+      );
+    }
+
     const role = user.role.toUpperCase() === "AUDITOR" ? "AUDITOR" : "STAFF";
     const title =
       role === "AUDITOR"

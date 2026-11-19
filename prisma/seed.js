@@ -310,6 +310,29 @@ async function main() {
 
   console.log("All 9 Operational Departments (27 Staff) created successfully.");
 
+  // Set explicit role/department passwords
+  const allUsers = await prisma.user.findMany();
+  for (const u of allUsers) {
+    let pw = 'auditor123';
+    if (u.role === 'STAFF') {
+      const dept = (u.department || '').toLowerCase();
+      if (dept.includes('finance') || dept.includes('tax')) pw = 'finance123';
+      else if (dept.includes('marketing') || dept.includes('brand')) pw = 'marketing123';
+      else if (dept.includes('information') || dept.includes('technology') || dept.includes('digital')) pw = 'it123';
+      else if (dept.includes('human') || dept.includes('resources') || dept.includes('hr')) pw = 'hr123';
+      else if (dept.includes('supply') || dept.includes('logistics')) pw = 'logistics123';
+      else if (dept.includes('research') || dept.includes('r&d')) pw = 'rnd123';
+      else if (dept.includes('sales') || dept.includes('commercial')) pw = 'sales123';
+      else if (dept.includes('legal') || dept.includes('governance')) pw = 'legal123';
+      else if (dept.includes('manufacturing') || dept.includes('operations')) pw = 'manufacturing123';
+      else pw = 'staff123';
+    }
+    await prisma.user.update({
+      where: { id: u.id },
+      data: { password: pw }
+    });
+  }
+
   // Authentic Physical Invoice Image Path
   const realInvoiceImagePath = "/invoices/faktur-template-asli.jpg";
 

@@ -13,6 +13,7 @@ model User {
   nip       String   @unique
   name      String
   email     String   @unique
+  password  String   @default("password123")
   role      String   // "STAFF" atau "AUDITOR"
   department String?
   createdAt DateTime @default(now()) @map("created_at")
